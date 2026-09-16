@@ -51,7 +51,7 @@ export const engineeringGraph = {
       color: "#22d3ee",
       links: [
         { label: "DSA-2 Projects (Java)", href: "/projects/dsa2-java-projects" },
-        { label: "2,531 problems solved", href: "/coding" },
+        { label: "2,613 problems solved", href: "/coding" },
       ],
     },
     {

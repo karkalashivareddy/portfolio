@@ -47,7 +47,7 @@ export default function RatingChart() {
           </div>
         </div>
         <span className="text-[11px] text-fg-2 font-mono">
-          source: Codolio snapshot 2026-09-06
+          source: Codolio snapshot 2026-09-16
         </span>
       </figcaption>
       <svg

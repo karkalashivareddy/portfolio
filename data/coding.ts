@@ -1,6 +1,6 @@
 import type { CodingPlatform, CodingAggregate } from "../lib/types";
 
-// Fallback snapshot captured during the 2026-09-06 audit.
+// Fallback snapshot captured during the 2026-09-16 audit.
 // The live sync layer refreshes these values via the Codolio public API
 // (lib/codolio.ts). These numbers are NEVER shown as "live" — freshness is
 // always derived from the sync engine.
@@ -9,11 +9,11 @@ export const codingPlatformsFallback: CodingPlatform[] = [
     platform: "CodeChef",
     handle: "shivareddy_27",
     verified: true,
-    solvedTotal: 1943,
-    rating: 1455,
-    maxRating: 1455,
-    dsaRating: 1707,
-    contests: 36,
+    solvedTotal: 1976,
+    rating: 1474,
+    maxRating: 1474,
+    dsaRating: 1737,
+    contests: 37,
     badges: [
       "Problem Solver — Diamond (1000+ problems)",
       "Daily Streak — Diamond (100 days)",
@@ -27,14 +27,14 @@ export const codingPlatformsFallback: CodingPlatform[] = [
     platform: "LeetCode",
     handle: "KarkalaShivaReddy",
     verified: true,
-    solvedTotal: 264,
-    easy: 179,
-    medium: 71,
-    hard: 14,
-    rating: 1475,
-    maxRating: 1500,
-    contests: 14,
-    maxStreak: 91,
+    solvedTotal: 276,
+    easy: 185,
+    medium: 76,
+    hard: 15,
+    rating: 1510,
+    maxRating: 1510,
+    contests: 15,
+    maxStreak: 100,
     languages: ["Java"],
     badges: ["Annual Badge ×2"],
     url: "https://leetcode.com/u/KarkalaShivaReddy/",
@@ -44,11 +44,11 @@ export const codingPlatformsFallback: CodingPlatform[] = [
     platform: "GeeksforGeeks",
     handle: "shiva0327",
     verified: true,
-    solvedTotal: 225,
-    easy: 89,
-    medium: 51,
+    solvedTotal: 246,
+    easy: 90,
+    medium: 58,
     hard: 2,
-    maxStreak: 85,
+    maxStreak: 94,
     url: "https://www.geeksforgeeks.org/user/shiva0327/",
     color: "#34d399",
   },
@@ -56,7 +56,7 @@ export const codingPlatformsFallback: CodingPlatform[] = [
     platform: "HackerRank",
     handle: "karkalashivared1",
     verified: true,
-    solvedTotal: 68,
+    solvedTotal: 75,
     badges: ["Problem Solving", "Java", "SQL"],
     certificates: ["Java (Basic)", "CSS (Basic)"],
     url: "https://www.hackerrank.com/profile/karkalashivared1",
@@ -66,20 +66,20 @@ export const codingPlatformsFallback: CodingPlatform[] = [
     platform: "Codeforces",
     handle: "shiva_reddy_27",
     verified: true,
-    solvedTotal: 31,
-    maxStreak: 28,
+    solvedTotal: 40,
+    maxStreak: 37,
     url: "https://codeforces.com/profile/shiva_reddy_27",
     color: "#d08770",
   },
 ];
 
 export const codingAggregate: CodingAggregate = {
-  totalSolved: 2531,
+  totalSolved: 2613,
   platforms: 5,
-  contests: 50, // 50 = 36 CodeChef rated + 14 LeetCode rated (fallback matches the live aggregate method: sum of per-platform rated-contest counts)
-  maxStreak: 91,
+  contests: 52, // 52 = 37 CodeChef rated + 15 LeetCode rated (fallback matches the live aggregate method: sum of per-platform rated-contest counts)
+  maxStreak: 100,
   source: "Codolio",
-  asOf: "2026-09-06",
+  asOf: "2026-09-16",
 };
 
 // Verified CodeChef rating progression (Starters 202→254), used for the

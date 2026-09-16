@@ -27,8 +27,8 @@ function KineticWords() {
 
 function SignalScene() {
   const values = [
-    ["01", "CodeChef", "1,943", "#b8ee4a"], ["02", "LeetCode", "264", "#54e5ff"],
-    ["03", "GFG", "225", "#32d583"], ["04", "HackerRank", "68", "#ffb347"], ["05", "Codeforces", "31", "#ee4da9"],
+    ["01", "CodeChef", "1,976", "#b8ee4a"], ["02", "LeetCode", "276", "#54e5ff"],
+    ["03", "GFG", "246", "#32d583"], ["04", "HackerRank", "75", "#ffb347"], ["05", "Codeforces", "40", "#ee4da9"],
   ] as const;
   return <section id="signal" className="x2-section x2-signal">
     <div className="x2-wrap"><ChapterMark number="02" title="THE SIGNAL" note="practice becomes visible" />

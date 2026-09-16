@@ -49,10 +49,10 @@ export const socials: import("../lib/types").Socials = {
 };
 
 export const verifiedNumbers = {
-  problemsSolved: 2531,
+  problemsSolved: 2613,
   platforms: 5,
   codechefContests: 36,
-  codingStreakDays: 91,
+  codingStreakDays: 100,
   source: "Codolio",
-  asOf: "2026-09-06",
+  asOf: "2026-09-16",
 } as const;

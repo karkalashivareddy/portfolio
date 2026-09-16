@@ -73,4 +73,4 @@ export const skillCategories: SkillCategory[] = [
 ];
 
 export const codingSkillsNote =
-  "Backing signal: 2,531 accepted solutions across CodeChef, LeetCode, GFG, HackerRank and Codeforces — every number links to its live source in the Coding section.";
+  "Backing signal: 2,613 accepted solutions across CodeChef, LeetCode, GFG, HackerRank and Codeforces — every number links to its live source in the Coding section.";
