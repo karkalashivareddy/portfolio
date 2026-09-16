@@ -27,8 +27,8 @@ function PharmaVisual() {
 
 function CommandVisual() {
   return (
-    <div className="case-visual case-visual-command" role="img" aria-label="Generated process lifecycle visualization showing a shell, fork, child process, execvp, program execution and waitpid synchronization">
-      <div className="case-visual-topline"><span>GENERATED PROCESS VISUALIZATION</span><span>POSIX / LIFECYCLE</span></div>
+    <div className="case-visual case-visual-command" role="img" aria-label="Generated planned process lifecycle visualization showing a parent, fork, child process, exec, program execution and wait synchronization">
+      <div className="case-visual-topline"><span>GENERATED PLANNED PROCESS MODEL</span><span>POSIX / LIFECYCLE</span></div>
       <div className="terminal-command"><span>$</span> ./program arg1 arg2 arg3</div>
       <div className="process-track">
         <div className="process-node process-parent"><small>01 / PARENT</small><strong>REPL</strong><em>parse argv</em></div>
@@ -37,7 +37,7 @@ function CommandVisual() {
         <div className="process-arrow process-arrow-back">waitpid()</div>
         <div className="process-node process-parent process-sync"><small>04 / PARENT</small><strong>SYNCHRONIZED</strong><em>WIFEXITED / WIFSIGNALED</em></div>
       </div>
-      <div className="case-visual-foot"><span>RAW TERMINAL / SIGNALS</span><span>NO FULL SHELL CLAIM</span></div>
+      <div className="case-visual-foot"><span>PLANNED C / LINUX DESIGN</span><span>NO IMPLEMENTATION CLAIM</span></div>
     </div>
   );
 }
@@ -55,10 +55,10 @@ function HospitalVisual() {
 
 function DsaVisual() {
   return (
-    <div className="case-visual case-visual-dsa" role="img" aria-label="Generated data structures visualization showing AVL tree, B plus tree, graph traversal and minimum spanning tree">
+    <div className="case-visual case-visual-dsa" role="img" aria-label="Generated data structures visualization showing AVL insertion, a range scan, and Prim's minimum spanning tree">
       <div className="case-visual-topline"><span>GENERATED ALGORITHM VISUALIZATION</span><span>JAVA / DSA</span></div>
-      <div className="dsa-map"><div className="dsa-tree"><span>AVL</span><i /><b /><i /><b /><b /></div><div className="dsa-bplus"><span>B+ TREE</span><b /><b /><b /></div><div className="dsa-graph"><span>GRAPH / MST</span><i /><i /><i /><i /></div></div>
-      <div className="case-visual-foot"><span>BFS / DFS</span><span>PRIM / KRUSKAL</span></div>
+      <div className="dsa-map"><div className="dsa-tree"><span>AVL</span><i /><b /><i /><b /><b /></div><div className="dsa-bplus"><span>RANGE SCAN</span><b /><b /><b /></div><div className="dsa-graph"><span>GRAPH / MST</span><i /><i /><i /><i /></div></div>
+      <div className="case-visual-foot"><span>ARRAYLIST FILTER</span><span>PRIM&apos;S MST</span></div>
     </div>
   );
 }

@@ -70,11 +70,11 @@ function SystemsScene() {
 function GitHubScene() {
   const [active, setActive] = useState(0);
   const repositories = [
-    ["DataBase-System-and-Distributed-Backend-Development", "React · JavaScript", projects[0].github],
-    ["Command-Argument-Passing-System", "C · Linux", projects[1].github],
+    ["forgesense-industrial-intelligence", "Spring Boot · Kafka · ML", "https://github.com/karkalashivareddy/forgesense-industrial-intelligence"],
+    ["KLH_CSE_2026-27_DSA-3_S3_T17_Loginsight-Analyzer", "Java · React · Algorithms", "https://github.com/karkalashivareddy/KLH_CSE_2026-27_DSA-3_S3_T17_Loginsight-Analyzer"],
+    ["portfolio", "Next.js · TypeScript", "https://github.com/karkalashivareddy/portfolio"],
+    ["DataBase-System-and-Distributed-Backend-Development", "React · MongoDB", projects[0].github],
     ["hospital-bed-dashboard", "Node · MySQL", projects[2].github],
-    ["DSA2-Projects", "Java", projects[3].github],
-    ["FWD", "HTML · CSS", projects[4].github],
   ] as const;
   return <section id="github" className="x2-section x2-github"><div className="x2-wrap"><ChapterMark number="05" title="THE CONSTELLATION" note="public work, exactly as reported" />
     <div className="x2-github-heading"><div><p className="x2-kicker">github / inspectable by design</p><h2>Repositories<br /><em>become a map.</em></h2></div><p>Early public workspace. No fabricated stars, forks, followers, or commits. The constellation is a visual index for the real repositories behind the work.</p></div>

@@ -29,7 +29,7 @@ export default function ProjectsPage() {
         <header className="case-index-intro">
           <p className="case-study-eyebrow">03 / WORK / SYSTEMS MADE VISIBLE</p>
           <h1><span>Projects are</span><span>where</span><em>the world gets specific.</em></h1>
-          <p>Five builds, arranged by depth rather than volume. Start with the flagship system, then move through processes, beds, algorithms and coursework.</p>
+          <p>Five detailed case studies, arranged by depth rather than volume. Start with the flagship system, then move through processes, beds, algorithms and coursework. Additional published work is listed below.</p>
         </header>
 
         <section className="case-index-feature" style={{ "--project-accent": featured.accent ?? "#f5b759" } as React.CSSProperties}>
@@ -40,7 +40,7 @@ export default function ProjectsPage() {
         <section className="case-index-chapter"><div className="case-index-chapter-head"><p className="case-study-eyebrow">02 / STRONG SYSTEM PROJECTS</p><p>Different engineering questions, different visual grammar.</p></div>{strong.map((project, index) => <ProjectLine key={project.slug} project={project} index={index + 2} />)}</section>
         <section className="case-index-chapter case-index-supporting"><div className="case-index-chapter-head"><p className="case-study-eyebrow">03 / SUPPORTING ENGINEERING WORK</p><p>Honest scope. Useful breadth.</p></div>{supporting.map((project, index) => <ProjectLine key={project.slug} project={project} index={index + 4} />)}</section>
 
-        <section className="case-index-signals"><p className="case-study-eyebrow">04 / SMALLER SIGNALS</p>{additionalProjects.map((item) => <a key={item.name} href={item.url ?? undefined} target={item.url ? "_blank" : undefined} rel={item.url ? "noreferrer" : undefined}><span>{item.name}</span><small>{item.scope} · {item.note}</small></a>)}</section>
+        <section className="case-index-signals"><p className="case-study-eyebrow">04 / ADDITIONAL PUBLIC WORK</p>{additionalProjects.map((item) => <a key={item.name} href={item.url ?? undefined} target={item.url ? "_blank" : undefined} rel={item.url ? "noreferrer" : undefined}><span>{item.name}</span><small>{item.scope} · {item.note}</small></a>)}</section>
       </div>
     </main>
   );

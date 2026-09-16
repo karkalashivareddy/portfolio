@@ -6,11 +6,12 @@ Audit â†’ brand â†’ message architecture. All copy must stay verifiabl
 
 ## 1. Positioning
 
-**Current honest position**: a 2nd-year Computer Science student at KL University with
-- strong competitive programming numbers (verified via Codolio),
-- real C/Linux systems coursework,
-- two product-grade engineering projects,
-- clear momentum toward backend/full-stack systems engineering.
+**Current honest position**: a Computer Science student at KL University with
+- verified coding activity sourced from Codolio,
+- executable algorithm work,
+- C/Linux systems coursework,
+- full-stack, backend, database, and applied-ML projects,
+- clear momentum toward production-oriented systems engineering.
 
 **Positioning statement (final):**
 
@@ -20,9 +21,9 @@ Audit â†’ brand â†’ message architecture. All copy must stay verifiabl
 
 | Claim | Evidence |
 |---|---|
-| Algorithms / DSA depth | Codolio ~2,531 solved, CodeChef 1,943 + DSA rating 1707, LeetCode 264, GFG 225 + topic distribution |
-| Systems / C / Linux / OS | Command Argument Passing System, mini-shell, `/proc` work, signals, termios |
-| Backend / full-stack | PharmaStock service-layer architecture, Hospital Bed Express+MySQL |
+| Algorithms / DSA depth | LogInsight's executable algorithm laboratory, DSA2's AVL/range-scan/Prim modules, and verified Codolio activity |
+| Systems / C / Linux / OS | OSSP mini-shell, process, `/proc`, signal, FIFO, and file-descriptor exercises |
+| Backend / full-stack | ForgeSense, PharmaStock's frontend/service boundary, and Hospital Bed Express+MySQL |
 | Java (primary language) | Java DSA projects; LeetCode activity in Java; listed as primary in profile |
 | Product-quality frontend | PharmaStock React SPA: RBAC, analytics, design tokens, accessible states |
 
@@ -46,8 +47,8 @@ Audit â†’ brand â†’ message architecture. All copy must stay verifiabl
 - Future: Spring Boot, Docker, distributed systems, system design, cloud (listed as goals, clearly marked as goals).
 
 ### PROJECTS
-- 2 featured case studies (PharmaStock, Command Argument Passing System).
-- Secondary: hospital bed mgmt, Java DSA (AVL/B+/Graph).
+- 1 detailed flagship case study (PharmaStock), supported by systems, backend, database, algorithm, and coursework pages.
+- Secondary: hospital bed management, Java DSA (AVL/range scan/Prim), and FWD coursework.
 - Every featured project gets a `/projects/:slug` page with problem â†’ architecture â†’ implementation â†’ result (only verified sections).
 
 ### SKILLS
@@ -65,19 +66,19 @@ Only verified items with honest proficiency framing (see data model). Categories
 
 ### GITHUB
 - Live profile via unauthenticated GitHub API with caching + graceful fallback.
-- Featured 5 repos (ranked); contribution activity described qualitatively if API unavailable.
+- Featured engineering repositories are ranked by technical signal; contribution activity is described qualitatively if the API is unavailable.
 
 ### JOURNEY
 Timeline (verified dates only):
 - **2025-12** â€” GitHub account created; began publishing.
 - **2026-02 â†’ 03** â€” FWD coursework + first Java system (GatePass).
 - **2026-04 â†’ 06** â€” Hospital Bed Management System (full-stack first complete project); university timetable generator.
-- **2026-05** â€” DSA-2 projects (AVL, B+Tree, Graph) in Java.
-- **2026-08** â€” PharmaStock frontend completed (review-2); OSSP C practicals + command-argument-p passing system; fraud-analysis research scaffold.
+- **2026-05** â€” DSA-2 projects (AVL insertion, range scan, Prim's MST) in Java.
+- **2026-08** â€” PharmaStock frontend completed (review-2); OSSP C practicals and the command-argument project abstract were published.
 - **Ongoing** â€” CodeChef/LeetCode/GFG campaigns (verified contest history runs to Starters 254).
 
 ### CONTACT
-LinkedIn, GitHub, Codolio. Email only if user supplies a public address (none verified â†’ placeholder with `mailto` disabled).
+LinkedIn, GitHub, Codolio, portfolio, and the public email address supplied for the profile.
 
 ---
 

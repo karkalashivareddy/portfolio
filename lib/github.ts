@@ -3,16 +3,16 @@ import { config } from "./config";
 import { readJson, writeJson, nowIso, freshnessFor, ageMs } from "./store";
 
 /**
- * Fallback snapshot captured during the 2026-09-06 audit (see /docs
+ * Fallback snapshot captured during the 2026-09-16 audit (see /docs
  * profile-audit.md, repository-audit.md). Used ONLY when GitHub is unreachable
  * and the cache is empty — the UI marks it "unavailable/snapshot", never live.
  */
 const PROFILE_FALLBACK: GithubProfile = {
   login: "karkalashivareddy",
-  name: null,
-  bio: null,
+  name: "Karkala Shiva Reddy",
+  bio: "CSE student building algorithms, backend systems, databases, and applied ML projects.",
   avatar_url: "https://avatars.githubusercontent.com/u/247306745?v=4",
-  public_repos: 9,
+  public_repos: 11,
   followers: 0,
   following: 0,
   created_at: "2025-12-02T05:43:49Z",
@@ -20,13 +20,17 @@ const PROFILE_FALLBACK: GithubProfile = {
 };
 
 const REPOS_FALLBACK: GithubRepo[] = [
-  { name: "DataBase-System-and-Distributed-Backend-Development", description: "Database Systems & Distributed Backend coursework: PharmaStock inventory portal (React + service layer) + DB practicals", html_url: "https://github.com/karkalashivareddy/DataBase-System-and-Distributed-Backend-Development", language: "JavaScript", stars: 0, forks: 0, topics: [], updated_at: "2026-08-29T00:00:00Z", private: false },
-  { name: "Command-Argument-Passing-System", description: "Linux-based process monitoring and control system using C, Linux/POSIX system calls, /proc, and signals", html_url: "https://github.com/karkalashivareddy/Command-Argument-Passing-System", language: "C", stars: 0, forks: 0, topics: ["c", "linux", "operating-systems"], updated_at: "2026-08-28T00:00:00Z", private: false },
-  { name: "Creaters_Shell_OSSP", description: "OSSP practicals & skills in C: fork/exec/signals/termios mini-shell and process inspection", html_url: "https://github.com/karkalashivareddy/Creaters_Shell_OSSP", language: "C", stars: 0, forks: 0, topics: ["c", "linux"], updated_at: "2026-08-27T00:00:00Z", private: false },
-  { name: "hospital-bed-dashboard", description: "Hospital Bed Management System — Express + MySQL REST API with React and vanilla clients", html_url: "https://github.com/karkalashivareddy/hospital-bed-dashboard", language: "JavaScript", stars: 0, forks: 0, topics: ["express", "mysql", "react"], updated_at: "2026-06-20T00:00:00Z", private: false },
-  { name: "university-time-table-generator", description: "University timetable generation tooling with constraint validation (Python)", html_url: "https://github.com/karkalashivareddy/university-time-table-generator", language: "Python", stars: 0, forks: 0, topics: [], updated_at: "2026-06-09T00:00:00Z", private: false },
-  { name: "DSA2-Projects", description: "DSA-2 Mini Projects — AVL tree, B+ tree and graph/MST implementations in Java", html_url: "https://github.com/karkalashivareddy/DSA2-Projects", language: "Java", stars: 0, forks: 0, topics: ["java", "data-structures", "algorithms"], updated_at: "2026-05-28T00:00:00Z", private: false },
-  { name: "FWD", description: "Frontend Web Development coursework (HTML/CSS/JS labs + Java projects)", html_url: "https://github.com/karkalashivareddy/FWD", language: "HTML", stars: 0, forks: 0, topics: [], updated_at: "2026-03-12T00:00:00Z", private: false },
+  { name: "forgesense-industrial-intelligence", description: "Industrial operations intelligence platform with Spring Boot, digital twins, FastAPI ML, Kafka, Redis, PostgreSQL, WebSockets, and Three.js.", html_url: "https://github.com/karkalashivareddy/forgesense-industrial-intelligence", language: "Java", stars: 0, forks: 0, topics: ["docker", "fastapi", "java", "kafka", "machine-learning", "postgresql", "python", "redis", "spring-boot", "threejs", "websockets"], updated_at: "2026-09-16T00:00:00Z", private: false },
+  { name: "KLH_CSE_2026-27_DSA-3_S3_T17_Loginsight-Analyzer", description: "Full-stack log intelligence laboratory combining Spring Boot, React, and executable string, dynamic-programming, graph/flow, randomized, approximation, and parallel algorithms.", html_url: "https://github.com/karkalashivareddy/KLH_CSE_2026-27_DSA-3_S3_T17_Loginsight-Analyzer", language: "Java", stars: 0, forks: 0, topics: ["algorithms", "benchmarking", "data-structures", "java", "log-analysis", "react", "spring-boot", "typescript"], updated_at: "2026-09-16T00:00:00Z", private: false },
+  { name: "portfolio", description: "Next.js portfolio application for Karkala Shiva Reddy with typed project data, interactive UI, motion, and a client-side Three.js scene.", html_url: "https://github.com/karkalashivareddy/portfolio", language: "TypeScript", stars: 0, forks: 0, topics: ["nextjs", "portfolio", "react", "tailwindcss", "threejs", "typescript"], updated_at: "2026-09-16T00:00:00Z", private: false },
+  { name: "DataBase-System-and-Distributed-Backend-Development", description: "PharmaStock coursework repository with a React/Vite medicine inventory interface, Express/Mongoose backend foundation, and database systems practicals.", html_url: "https://github.com/karkalashivareddy/DataBase-System-and-Distributed-Backend-Development", language: "JavaScript", stars: 0, forks: 0, topics: ["database", "express", "inventory-management", "javascript", "mongodb", "mongoose", "nodejs", "react"], updated_at: "2026-09-16T00:00:00Z", private: false },
+  { name: "hospital-bed-dashboard", description: "Hospital bed dashboard with an Express/MySQL API, admission, discharge, and transfer workflows, plus browser and React frontends.", html_url: "https://github.com/karkalashivareddy/hospital-bed-dashboard", language: "JavaScript", stars: 0, forks: 0, topics: ["dashboard", "express", "healthcare", "javascript", "mysql", "nodejs"], updated_at: "2026-09-16T00:00:00Z", private: false },
+  { name: "Creaters_Shell_OSSP", description: "Linux systems-programming collection with a C mini shell, process, signal, /proc, FIFO, and file-descriptor exercises.", html_url: "https://github.com/karkalashivareddy/Creaters_Shell_OSSP", language: "C", stars: 0, forks: 0, topics: ["c", "ipc", "linux", "operating-systems", "processes", "signals", "systems-programming"], updated_at: "2026-09-16T00:00:00Z", private: false },
+  { name: "Command-Argument-Passing-System", description: "Project abstract for a planned C/Linux fork-exec argument-passing and process-synchronization utility; implementation source is not yet in the repository.", html_url: "https://github.com/karkalashivareddy/Command-Argument-Passing-System", language: "C", stars: 0, forks: 0, topics: ["c", "linux", "operating-systems", "process-management", "systems-programming"], updated_at: "2026-09-16T00:00:00Z", private: false },
+  { name: "university-time-table-generator", description: "Python heuristic university timetable generator with room, faculty, batch, and credit-load constraints.", html_url: "https://github.com/karkalashivareddy/university-time-table-generator", language: "Python", stars: 0, forks: 0, topics: ["algorithms", "constraint-satisfaction", "python", "scheduling"], updated_at: "2026-09-16T00:00:00Z", private: false },
+  { name: "DSA2-Projects", description: "Java DSA exercises covering AVL insertion, a warehouse range-scan demo, and Prim's minimum spanning tree.", html_url: "https://github.com/karkalashivareddy/DSA2-Projects", language: "Java", stars: 0, forks: 0, topics: ["algorithms", "avl-tree", "data-structures", "java", "minimum-spanning-tree"], updated_at: "2026-09-16T00:00:00Z", private: false },
+  { name: "FWD", description: "Front-end development coursework with HTML/CSS/JavaScript exercises and web/Java student gate-pass implementations.", html_url: "https://github.com/karkalashivareddy/FWD", language: "HTML", stars: 0, forks: 0, topics: ["css", "frontend", "html", "java", "javascript", "web-development"], updated_at: "2026-09-16T00:00:00Z", private: false },
+  { name: "karkalashivareddy", description: "Professional profile for Karkala Shiva Reddy, a CSE student building algorithms, systems, backend, database, and applied ML projects.", html_url: "https://github.com/karkalashivareddy/karkalashivareddy", language: "Markdown", stars: 0, forks: 0, topics: [], updated_at: "2026-09-16T00:00:00Z", private: false },
 ];
 
 const CACHE_KEY = `github:${config.github.username}`;

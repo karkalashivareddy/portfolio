@@ -170,6 +170,13 @@ export const CLASS_META: Record<
 
 export const additionalProjects = [
   {
+    name: "forgesense-industrial-intelligence",
+    scope: "FLAGSHIP",
+    language: "Java / Python",
+    note: "Industrial operations platform with Spring Boot, FastAPI ML, Kafka, Redis, PostgreSQL, WebSockets, and Three.js.",
+    url: "https://github.com/karkalashivareddy/forgesense-industrial-intelligence",
+  },
+  {
     name: "university-time-table-generator",
     scope: "SCRIPT",
     language: "Python",
@@ -178,7 +185,7 @@ export const additionalProjects = [
   },
   {
     name: "KLH_CSE_2026-27_DSA-3_S3_T17_Loginsight-Analyzer",
-    scope: "PUBLIC",
+    scope: "ALGORITHM LAB",
     language: "Java / TypeScript",
     note: "Full-stack log analytics lab with executable algorithm modules.",
     url: "https://github.com/karkalashivareddy/KLH_CSE_2026-27_DSA-3_S3_T17_Loginsight-Analyzer",

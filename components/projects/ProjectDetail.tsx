@@ -25,9 +25,9 @@ const SECTION_COPY: Record<string, { problem: string; system: string; ending: st
     ending: "A product surface designed around a real domain model: batches, transactions, expiry, roles and derived analytics.",
   },
   "command-argument-passing-system": {
-    problem: "The project makes a small but important operating-system question visible: how does a parent hand a command and its arguments to a child, then know how execution ended?",
-    system: "This is a process lifecycle, not a UI stack. The visual follows argv from the REPL through fork, execvp and back through waitpid.",
-    ending: "Small systems tooling is where process creation, error propagation and synchronization stop being vocabulary and become behavior.",
+    problem: "The abstract frames a small but important operating-system question: how should a parent hand a command and its arguments to a child, then know how execution ended?",
+    system: "This is a planned process lifecycle, not a UI stack. The visualization follows argv from a parent parser through fork, exec, and wait.",
+    ending: "A clear process-lifecycle design is a useful starting point; runtime behavior remains future work until the implementation is published.",
   },
   "hospital-bed-management-system": {
     problem: "Hospitals need a live availability view instead of manually reconciling bed status across separate lists.",

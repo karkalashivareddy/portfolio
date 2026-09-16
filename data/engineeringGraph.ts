@@ -73,11 +73,12 @@ export const engineeringGraph = {
     {
       id: "backend",
       label: "BACKEND",
-      sub: "Node · Express · REST",
+      sub: "Spring Boot · Node · REST",
       x: 0.82,
       y: 0.3,
       color: "#34d399",
       links: [
+        { label: "ForgeSense Industrial Intelligence", href: "https://github.com/karkalashivareddy/forgesense-industrial-intelligence", external: true },
         { label: "PharmaStock", href: "/projects/pharmastock-medicine-stock-management" },
         { label: "Hospital Bed API", href: "/projects/hospital-bed-management-system" },
       ],
@@ -109,7 +110,7 @@ export const engineeringGraph = {
     {
       id: "cloud",
       label: "CLOUD",
-      sub: "Next.js · Vercel target",
+      sub: "Next.js · Vercel deployment",
       x: 0.5,
       y: 0.9,
       color: "#5b8def",
