@@ -1,50 +1,91 @@
-# Portfolio — Karkala Shiva Reddy
+# Karkala Shiva Reddy — Portfolio
 
-Production-quality personal engineering portfolio with a live-data freshness system, privacy-conscious analytics, and an admin dashboard. Built with Next.js 16 (App Router, Turbopack).
+This repository contains my personal portfolio as a Next.js application. It is designed as a small software product rather than a static résumé: projects, engineering interests, coding profiles, and contact links are presented through an interactive, responsive interface with motion, a command palette, an interview-focused mode, and a client-only Three.js scene.
 
-<!-- BEGIN:nextjs-agent-rules -->
+Live site configured for this repository: [portfolio-shiva-c677.vercel.app](https://portfolio-shiva-c677.vercel.app)
 
-# This is NOT the Next.js you know
+## Features
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+- App Router landing page composed from hero, work, about, lab, and contact sections.
+- Project data model with problem, solution, architecture, technology, category, and repository fields.
+- Interactive navigation, scroll progress, reveal/text animations, magnetic buttons, and a command palette.
+- Interview Mode for presenting project details in a focused reading flow.
+- Client-only React Three Fiber scene that avoids server-side rendering for the 3D canvas.
+- Reduced-motion and mobile hooks used by the interactive UI.
+- Links to GitHub, LinkedIn, email, and Codolio profiles.
 
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+The content is currently maintained in source files under `data/`; no runtime CMS or GitHub API integration is implemented.
 
-<!-- END:nextjs-agent-rules -->
+## Architecture
 
-## What's inside
-
-- **Live section** — fetches real GitHub and Codolio data at runtime with stale-while-revalidate caching (TTLs in `lib/config.ts`); degrades to embedded fallback snapshots when offline.
-- **Analytics** — cookieless pageviews/outbound-clicks, visitor IDs in localStorage, public API exposes totals only; full breakdown is admin-only.
-- **Admin** — login (httpOnly cookie, 12h), on-demand sync, analytics summary, settings, and GitHub README generation.
-- **GitHub README automation** — generates `github/profile-readme.md`; auto-publish to the profile repo is opt-in and never runs without the token configured.
-- **No fabricated claims** — every number on the site maps to a source in `docs/data-source-map.md`; unverifiable claims are labeled or omitted.
-
-## Getting started
-
-```bash
-npm install        # install deps
-cp .env.example .env.local   # then fill in keys (optional for local dev)
-npm run dev        # http://localhost:3000
+```mermaid
+flowchart TD
+    R[Next.js App Router] --> P[app/page.tsx]
+    P --> S[Section components]
+    P --> U[Interactive UI components]
+    P --> C[Client-only Three.js Scene]
+    S --> D[data/index.ts]
+    U --> H[Motion and device hooks]
+    C --> T[React Three Fiber + Three.js]
 ```
 
-Admin features are disabled until `ADMIN_TOKEN` is set. See `.env.example` for every variable.
+## Stack
 
-## Commands
+| Area | Technologies |
+| --- | --- |
+| Application | Next.js 16.3.4, React 19, TypeScript |
+| Styling | Tailwind CSS 4, project CSS design system |
+| Interaction | Framer Motion, GSAP, Lenis, Lucide React |
+| 3D | Three.js, React Three Fiber, `@react-three/drei` |
+| Quality | ESLint, TypeScript, Next production build |
 
-| Command        | Purpose                              |
-| -------------- | ------------------------------------ |
-| `npm run dev`  | Dev server (Turbopack)               |
-| `npm run build`| Production build + type-check        |
-| `npm run lint` | ESLint (Next 16 React 19 rules)      |
-| `npm run start`| Serve production build               |
+## Run locally
 
-## Data & persistence
+Prerequisites: Node.js 20+ and npm.
 
-- Live sources: GitHub REST API, Codolio API.
-- Runtime state persists to `data-store/` (gitignored): `github.json`, `codolio.json`, `analytics.json`, settings, README drafts.
-- Drop-in swap: replace `lib/store.ts` with Upstash/Turso/S3 (interface documented in `docs/technical-architecture.md`).
+```bash
+git clone https://github.com/karkalashivareddy/portfolio.git
+cd portfolio
+npm install
+npm run dev
+```
 
-## Documentation
+Open `http://localhost:3000`.
 
-See `docs/` — project/how-the-site-works, data model, architecture, deployment, and the source-of-truth audits (`environment-audit.md`, `github-data-audit.md`, `data-source-map.md`).
+Available scripts:
+
+```bash
+npm run dev       # development server
+npm run build     # production build
+npm start         # serve the production build
+npm run lint      # ESLint
+```
+
+No environment variables are required by the current source tree. If deployment-specific configuration is added later, document it here and keep real credentials out of the repository.
+
+## Project structure
+
+```text
+app/
+  page.tsx              page composition
+  layout.tsx            metadata and fonts
+  globals.css           global visual system
+components/
+  sections/             hero, work, about, lab, and contact sections
+  ui/                   navigation and interaction primitives
+  3d/                   client-only Three.js scene
+data/index.ts           profile, projects, skills, and external links
+hooks/                  reduced-motion, mobile, and pointer hooks
+lib/                    shared utilities
+```
+
+## Engineering notes
+
+- `Scene` is dynamically imported with server-side rendering disabled because WebGL/canvas work belongs in the browser.
+- Project metadata is typed through the `Project` interface, which keeps the portfolio content consistent across sections.
+- The UI includes reduced-motion and mobile checks so the visual layer can adapt without changing the content model.
+- The configured Vercel URL is treated as a deployment link; deployment configuration is not stored in this repository.
+
+## Author
+
+**Karkala Shiva Reddy** — [GitHub](https://github.com/karkalashivareddy)
