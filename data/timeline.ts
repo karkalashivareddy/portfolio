@@ -30,7 +30,7 @@ export const timeline: TimelineEntry[] = [
     date: "2026-05",
     title: "DSA-2 Java projects",
     detail:
-      "Implemented AVL tree, B+ tree and graph/MST (BFS, DFS, Prim, Kruskal) console projects in Java.",
+      "Implemented AVL insertion with rotations, a warehouse price-range scan, and Prim's minimum spanning tree in Java.",
     kind: "project",
     source: "DSA2-Projects repository",
   },
@@ -52,9 +52,9 @@ export const timeline: TimelineEntry[] = [
   },
   {
     date: "2026-08",
-    title: "OS/Systems coursework complete",
+    title: "OS/Systems coursework documented",
     detail:
-      "Command Argument Passing System + mini-shell + /proc inspection in C; diamonds and streaks logged on coding platforms.",
+      "Published the command-argument project abstract; the companion OSSP repository contains the C mini-shell, signal, /proc, FIFO, and process exercises.",
     kind: "learning",
     source: "Command-Argument-Passing-System + Creaters_Shell_OSSP repos",
   },

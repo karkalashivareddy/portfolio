@@ -43,33 +43,26 @@ export const projects: Project[] = [
     slug: "command-argument-passing-system",
     title: "Command Argument Passing System",
     tagline:
-      "C-level exploration of process creation, argument passing and Linux process states.",
-    type: "Backend/Systems",
-    rank: "A",
-    class: "strong",
-    featured: true,
-    kind: "case-study",
-    status: "publishing-soon",
+      "Project abstract for a planned C/Linux fork-exec argument-passing utility.",
+    type: "Academic",
+    rank: "C",
+    class: "supporting",
+    featured: false,
+    kind: "card",
+    status: "academic",
     summary:
-      "A Linux/UNIX command-line project demonstrating fork, execvp, wait and argv transfer, plus a mini-shell in raw terminal mode and /proc-based process state inspection.",
+      "The repository currently contains the project abstract and design scope; implementation source is not yet present.",
     problem:
-      "How does a parent process hand a command plus its arguments to a new child process, run it, and synchronize?",
+      "Document a process-management design for passing command arguments from a parent process to a child process.",
     solution:
-      "A REPL that parses input, forks children, transfers argv, executes via execvp, reports exit status, and — in companion work — reads live process state from /proc and handles raw terminal input.",
-    stack: [
-      "C",
-      "Linux / POSIX",
-      "fork / execvp / waitpid",
-      "/proc filesystem",
-      "signals",
-      "termios",
-    ],
+      "The abstract specifies a future fork/exec/wait-based command runner; implementation remains future work.",
+    stack: ["C (planned)", "Linux / POSIX concepts", "fork / exec / wait design"],
     github:
       "https://github.com/karkalashivareddy/Command-Argument-Passing-System",
     statusNote:
-      "Source + screenshots being published to the repo (docs are up). Systems coursework from KL University — Operating Systems & System Programming.",
+      "Documentation-only repository; source and executable are not currently published.",
     accent: "#34d399",
-    tags: ["C", "Linux", "OS", "Processes", "Signals"],
+    tags: ["C", "Linux", "OS", "Processes"],
   },
   {
     slug: "hospital-bed-management-system",
@@ -103,7 +96,7 @@ export const projects: Project[] = [
     slug: "dsa2-java-projects",
     title: "DSA-2 Projects — Java",
     tagline:
-      "AVL tree, B+ tree and graph/MST implementations in my primary language.",
+      "AVL insertion, a warehouse price-range scan, and Prim's minimum spanning tree in Java.",
     type: "Algorithms",
     rank: "B",
     class: "supporting",
@@ -111,12 +104,12 @@ export const projects: Project[] = [
     kind: "card",
     status: "academic",
     summary:
-      "Three Java projects: an AVL-based library system, a B+ tree warehouse index, and graph traversal + minimum spanning tree traffic optimization.",
+      "Three console exercises: AVL insertion with rotations, a warehouse range query over ArrayList data, and Prim's algorithm over an adjacency matrix.",
     problem:
-      "Show how balanced trees and graph algorithms solve realistic indexing, range-query and routing problems.",
+      "Practice balanced-tree updates, range filtering, and minimum-spanning-tree construction.",
     solution:
-      "Console implementations of AVL rotations, B+ tree range queries, and BFS/DFS/Prim/Kruskal with complexity documentation.",
-    stack: ["Java", "AVL Tree", "B+ Tree", "Graphs", "Minimum Spanning Tree"],
+      "Each module keeps its data model and traversal logic small enough to compile and run independently.",
+    stack: ["Java", "AVL Tree", "ArrayList range scan", "Prim's MST"],
     github: "https://github.com/karkalashivareddy/DSA2-Projects",
     tags: ["Java", "DSA", "Trees", "Graphs"],
   },
@@ -184,17 +177,10 @@ export const additionalProjects = [
     url: "https://github.com/karkalashivareddy/university-time-table-generator",
   },
   {
-    name: "fraud-detection-risk-intelligence",
-    scope: "SCAFFOLD",
-    language: "Python",
-    note: "Abstract + empty modules only — placeholder until real work lands.",
-    url: "https://github.com/karkalashivareddy/fraud-detection-risk-intelligence",
-  },
-  {
-    name: "KLH CSE DSA-3 — Loginsight Analyzer",
-    scope: "PRIVATE",
-    language: null,
-    note: "Private until real work lands — currently empty.",
-    url: null,
+    name: "KLH_CSE_2026-27_DSA-3_S3_T17_Loginsight-Analyzer",
+    scope: "PUBLIC",
+    language: "Java / TypeScript",
+    note: "Full-stack log analytics lab with executable algorithm modules.",
+    url: "https://github.com/karkalashivareddy/KLH_CSE_2026-27_DSA-3_S3_T17_Loginsight-Analyzer",
   },
 ] as const;

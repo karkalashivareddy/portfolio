@@ -14,11 +14,12 @@ export const projectFlows: Record<string, string[]> = {
     "Analytics",
   ],
   "command-argument-passing-system": [
+    "Design",
     "Parent",
     "fork",
     "child",
-    "execvp",
-    "waitpid",
+    "exec",
+    "wait",
   ],
   "hospital-bed-management-system": [
     "Frontend",
@@ -26,5 +27,5 @@ export const projectFlows: Record<string, string[]> = {
     "Express",
     "MySQL",
   ],
-  "dsa2-java-projects": ["AVL", "B+ Tree", "Graphs", "BFS/DFS", "Prim/Kruskal"],
+  "dsa2-java-projects": ["AVL", "Range scan", "Adjacency matrix", "Prim's MST"],
 };

@@ -45,7 +45,7 @@ export const engineeringGraph = {
     {
       id: "dsa",
       label: "DSA",
-      sub: "AVL · B+ tree · graphs · MST",
+      sub: "AVL · range scans · graphs · MST",
       x: 0.5,
       y: 0.12,
       color: "#22d3ee",

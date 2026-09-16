@@ -52,50 +52,38 @@ analytics (Recharts) · alerts (expiry / low stock) · three.js accents`,
   "command-argument-passing-system": {
     slug: "command-argument-passing-system",
     overview: [
-      "Systems coursework from the Operating Systems & System Programming course. The core program is a C REPL that forks a child, hands it the user's command plus arguments, executes it, and reports the exit status — demonstrating the full process lifecycle.",
-      "Companion work deepens the topic: a mini-shell with raw terminal input and signal handling, a fork/exec demo pair, and /proc/<pid>/stat|status readers that show live process state.",
+      "This repository currently contains the project abstract for a planned Operating Systems & System Programming utility. It documents a fork/exec/wait design for passing command arguments from a parent process to a child.",
+      "The implementation source, build files, and executable are not currently published in this repository, so the design is intentionally presented as planned work rather than a completed systems project.",
     ],
-    architecture: `parent (REPL)
-   │  parse argv
-   ├─ fork()
-   ├─ child: execvp(cmd, argv)   ── or _exit(127)
-   └─ parent: waitpid() → WIFEXITED / WIFSIGNALED
-
-mini-shell
-   ├─ raw terminal (termios: ICANON/ECHO off)
-   ├─ built-ins (pwd, echo, clear, exit) + external cmd via fork+exec
-   └─ SIGINT/SIGTERM handler → restore terminal, clean exit`,
+    architecture: `planned design
+   │
+   ├─ parent parses a command and argv
+   ├─ fork() creates a child process
+   ├─ child calls an exec-family function
+   └─ parent waits and reports the child status`,
     stack: [
-      { category: "Language", items: ["C"] },
-      { category: "OS / POSIX", items: ["fork()", "execvp()", "waitpid()", "exit()"] },
-      { category: "Inspection", items: ["/proc/<pid>/stat", "/proc/<pid>/status"] },
-      { category: "Terminal", items: ["termios", "signals", "Makefile"] },
+      { category: "Planned language", items: ["C"] },
+      { category: "OS / POSIX concepts", items: ["fork()", "exec()", "wait()"] },
     ],
     features: [
-      "Command + argument parsing with tokenization",
-      "Child process creation and argv transfer to the new program",
-      "Program execution via execvp with graceful command-not-found handling",
-      "Parent/child synchronization via waitpid with exit/signal reporting",
-      "Mini-shell: raw keyboard input, backspace handling, built-in commands",
-      "Process state reporting from /proc (PID, state, PPID, name)",
+      "Project abstract and problem statement",
+      "Planned command and argument transfer design",
+      "Planned child-process creation and synchronization flow",
     ],
     engineeringDecisions: [
-      "Used waitpid over wait to get precise per-child exit/signal reporting.",
-      "argc errors surfaced via stderr with strerror(errno) — not silent failures.",
-      "Terminal restored on every exit path in the mini-shell (signal + normal) to avoid corrupting the user's TTY.",
+      "The documented design separates parsing, child execution, and parent synchronization so each process responsibility is explicit.",
+      "Implementation details are left unclaimed until source code is published.",
     ],
     challenges: [
-      "Getting raw-mode input handling right (termios, SIGINT) without leaving the terminal broken.",
-      "Parsing /proc field positions correctly (pid, comm with parentheses = quoting trap).",
+      "Turning the abstract into a reproducible C/Linux implementation with build and run instructions.",
     ],
     tradeoffs: [
-      "Single-command sequential execution by design — the point is lifecycle clarity, not a full shell.",
+      "The repository is currently documentation-only, so runtime behavior and error handling remain unverified.",
     ],
     lessons: [
-      "Processes are cheap to create but synchronization and error propagation decide correctness.",
-      "Writing small systems tooling (even a mini-shell) is the fastest way to read system calls with confidence.",
+      "A clear process-lifecycle design is a useful starting point, but the implementation must exist before runtime claims are made.",
     ],
-    status: "publishing-soon",
+    status: "academic",
     related: ["pharmastock-medicine-stock-management"],
   },
 };
