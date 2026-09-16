@@ -31,14 +31,14 @@ export const skillCategories: SkillCategory[] = [
     color: "#34d399",
     items: [
       { name: "Node.js / Express", note: "REST + realtime backends" },
-      { name: "REST API design", note: "Hospital beds, medicine portal" },
+      { name: "REST API design", note: "Hospital beds API (implemented)" },
       { name: "Linux / POSIX", note: "fork, exec, wait, signals" },
       { name: "/proc filesystem", note: "Process inspection" },
     ],
   },
   {
     title: "Databases",
-    note: "Modeled in the hospital beds schema and PharmaStock backend",
+    note: "Modeled in the hospital beds schema and PharmaStock data layer",
     color: "#38bdf8",
     items: [
       { name: "MySQL", note: "hospital_beds schema, indexed + ENUM" },
@@ -63,7 +63,7 @@ export const skillCategories: SkillCategory[] = [
     note: "On the engineering roadmap — learning in public",
     color: "#ff7a6b",
     items: [
-      { name: "Spring Boot", note: "Next backend framework" },
+      { name: "Spring Boot", note: "Used in ForgeSense backend" },
       { name: "Docker", note: "Containers & dev environments" },
       { name: "System design", note: "Scaling patterns" },
       { name: "Cloud", note: "AWS / deployment fundamentals" },

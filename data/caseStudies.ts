@@ -13,7 +13,7 @@ service layer (data/api.js)
   ├── today: demo-data adapters (src/data/*) with latency simulation
   └── contract: VITE_API_URL pointing at Express + Mongo (JWT + bcrypt)
   │
-analytics (Recharts) · alerts (expiry / low stock) · three.js accents`,
+analytics (Recharts) · alerts (expiry / low stock) · CSS-animated accents`,
     stack: [
       { category: "Frontend", items: ["React 18", "Vite", "Recharts", "lucide-react", "react-router-dom", "CSS3"] },
       { category: "Data layer", items: ["Adapter + demo data", "REST contract", "Debounced search", "validators"] },

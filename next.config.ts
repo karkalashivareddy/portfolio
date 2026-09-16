@@ -4,9 +4,9 @@ const isProd = process.env.NODE_ENV === "production";
 
 /**
  * Production security headers. CSP deliberately allows the pieces Next.js and
- * the client-side experience need: inline hydration scripts/styles, WebGL
- * (blob:/data: for textures), next/font (self-hosted), GitHub avatar images,
- * and our own same-origin API calls + dev HMR websocket.
+ * the client-side experience need: inline hydration scripts/styles, Canvas 2D
+ * scene, next/font (self-hosted), GitHub avatar images, and our own
+ * same-origin API calls + dev HMR websocket.
  */
 const securityHeaders = [
   {
