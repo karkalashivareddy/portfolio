@@ -109,6 +109,17 @@ lib/                    utilities (config, types, security, github, codolio, ana
 - The admin system uses HMAC-SHA256 signed stateless session cookies with rotation, CSRF same-origin checks, and timing-safe comparison.
 - The configured Vercel URL is treated as a deployment link; deployment configuration is not stored in this repository.
 
+## Screenshots
+
+| View | Screenshot |
+| --- | --- |
+| Home (Canvas 2D world scene) | ![Home](docs/assets/screenshots/portfolio-home.png) |
+| Projects | ![Projects](docs/assets/screenshots/portfolio-projects.png) |
+| Coding | ![Coding](docs/assets/screenshots/portfolio-coding.png) |
+| About | ![About](docs/assets/screenshots/portfolio-about.png) |
+
+*Screenshots captured from live Next.js application (dev server on :3099) on 2026-09-17. The `MasterWorldCanvas` uses Canvas 2D (`getContext("2d")`), not WebGL.*
+
 ## Author
 
 **Karkala Shiva Reddy** — [GitHub](https://github.com/karkalashivareddy)
