@@ -1,17 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-import type { CodingPlatform } from "../../lib/types";
-import { codingPlatformsFallback, codingPlatformsUrl, codingAggregate } from "../../data/coding";
+import type { CodingPlatform, CodingSnapshot } from "../../lib/types";
+import { codingPlatformsUrl, CODECHEF_HISTORY_LAST, codechefRatingHistory } from "../../data/coding";
 import SyncStatus from "../ui/SyncStatus";
-
-type Snapshot = {
-  platforms: CodingPlatform[];
-  aggregate: { totalSolved: number; platforms: number; contests: number; maxStreak: number; asOf: string };
-  meta: { status: string; fetchedAt: string | null };
-};
 
 const primaryNames = ["CodeChef", "LeetCode"];
 const secondaryNames = ["GeeksforGeeks", "HackerRank", "Codeforces"];
@@ -32,6 +25,9 @@ function PlatformProfile({ platform, primary }: { platform: CodingPlatform; prim
     ["max rating", number(platform.maxRating)],
     ["contests", number(platform.contests)],
     ...(typeof platform.dsaRating === "number" ? [["DSA rating", number(platform.dsaRating)]] : []),
+    ...(typeof platform.maxDsaRating === "number" && platform.maxDsaRating !== platform.dsaRating
+      ? [["peak DSA", number(platform.maxDsaRating)]]
+      : []),
     ...(typeof platform.maxStreak === "number" ? [["streak", `${number(platform.maxStreak)} days`]] : []),
   ];
 
@@ -45,36 +41,58 @@ function PlatformProfile({ platform, primary }: { platform: CodingPlatform; prim
   );
 }
 
-export default function CodingRouteLive({ points }: { points: string }) {
-  const [snapshot, setSnapshot] = useState<Snapshot>({ platforms: codingPlatformsFallback, aggregate: codingAggregate, meta: { status: "unavailable", fetchedAt: null } });
-
-  useEffect(() => {
-    let active = true;
-    fetch("/api/codolio")
-      .then((response) => response.ok ? response.json() as Promise<Snapshot> : Promise.reject(new Error("Codolio unavailable")))
-      .then((next) => { if (active) setSnapshot(next); })
-      .catch(() => undefined);
-    return () => { active = false; };
-  }, []);
-
+export default function CodingRouteLive({ points, snapshot }: { points: string; snapshot: CodingSnapshot }) {
   const primary = primaryNames.map((name) => platformByName(snapshot.platforms, name)).filter(Boolean) as CodingPlatform[];
   const secondary = secondaryNames.map((name) => platformByName(snapshot.platforms, name)).filter(Boolean) as CodingPlatform[];
   const total = snapshot.aggregate.totalSolved || 1;
   const codechef = platformByName(snapshot.platforms, "CodeChef");
   const leetcode = platformByName(snapshot.platforms, "LeetCode");
   const dsaNodes = [["AVL INSERTION", "rotation / balance"], ["RANGE SCAN", "ArrayList / filter"], ["ADJACENCY MATRIX", "weighted graph input"], ["PRIM'S MST", "greedy edge selection"], ["JAVA CONSOLE", "small executable modules"], ["COMPLEXITY", "reasoning / trade-offs"]];
-  const distribution = useMemo(() => snapshot.platforms.filter((platform) => typeof platform.solvedTotal === "number"), [snapshot.platforms]);
+  const distribution = snapshot.platforms.filter((platform) => typeof platform.solvedTotal === "number");
 
   return (
     <div className="coding-archive">
       <section className="coding-hero" aria-labelledby="coding-identity">
-        <div className="coding-hero-copy"><p className="world-kicker"><span>01</span> / CODING IDENTITY / PRACTICE AS PROOF</p><h2 id="coding-identity">The signal<br /><i>keeps moving.</i></h2><p className="coding-hero-lead">A public record of problem solving across five platforms — the repetition behind the systems work.</p><div className="coding-hero-status"><SyncStatus status={snapshot.meta.status} fetchedAt={snapshot.meta.fetchedAt} label="Codolio" /><a href={codingPlatformsUrl} target="_blank" rel="noopener noreferrer" data-cursor="OPEN SOURCE">Open source profile <ArrowUpRight size={14} /></a></div><div className="coding-hero-number-wrap"><div className="coding-hero-number" aria-label={`${snapshot.aggregate.totalSolved.toLocaleString()} problems solved`}>{snapshot.aggregate.totalSolved.toLocaleString("en-US")}</div><p>PROBLEMS SOLVED</p><div className="coding-hero-facts"><span>{snapshot.aggregate.platforms} PLATFORMS</span><span>{snapshot.aggregate.contests}+ RATED CONTESTS</span><span>{snapshot.aggregate.maxStreak}-DAY LONGEST STREAK</span></div></div></div>
+        <div className="coding-hero-copy"><p className="world-kicker"><span>01</span> / CODING IDENTITY / PRACTICE AS PROOF</p><h1 id="coding-identity">The signal<br /><i>keeps moving.</i></h1><p className="coding-hero-lead">A public record of problem solving across five platforms — the repetition behind the systems work.</p><div className="coding-hero-status"><SyncStatus status={snapshot.meta.status} fetchedAt={snapshot.meta.fetchedAt} lastSuccessfulSync={snapshot.meta.lastSuccessfulSync} origin={snapshot.meta.origin} label={snapshot.aggregate.source} /><a href={codingPlatformsUrl} target="_blank" rel="noopener noreferrer" data-cursor="OPEN SOURCE">Open source profile <ArrowUpRight size={14} /></a></div><div className="coding-hero-number-wrap"><div className="coding-hero-number" aria-label={`${snapshot.aggregate.totalSolved.toLocaleString()} problems solved`}>{snapshot.aggregate.totalSolved.toLocaleString("en-US")}</div><p>PROBLEMS SOLVED</p><div className="coding-hero-facts"><span>{snapshot.aggregate.platforms} PLATFORMS</span><span>{snapshot.aggregate.contests}+ RATED CONTESTS</span><span>{snapshot.aggregate.maxStreak}-DAY LONGEST STREAK</span></div></div></div>
         <div className="coding-hero-art" aria-hidden="true"><svg viewBox="0 0 520 360" role="presentation"><defs><linearGradient id="coding-signal-gradient" x1="0" x2="1"><stop stopColor="#65dedb" /><stop offset=".55" stopColor="#7aa2ff" /><stop offset="1" stopColor="#ed8fc8" /></linearGradient></defs><path d="M24 292 C100 280 105 250 164 238 S237 199 276 212 S338 178 376 133 S431 83 496 44" fill="none" stroke="url(#coding-signal-gradient)" strokeWidth="2" /><path d="M24 292 C100 280 105 250 164 238 S237 199 276 212 S338 178 376 133 S431 83 496 44" fill="none" stroke="#65dedb" strokeOpacity=".15" strokeWidth="18" />{[24,164,276,376,496].map((x, index) => <circle key={x} cx={x} cy={[292,238,212,133,44][index]} r={index === 4 ? 7 : 4} fill={index === 4 ? "#f5b759" : "#65dedb"} />)}<text x="24" y="326">REPETITION</text><text x="390" y="28">TRAJECTORY</text></svg><span className="coding-hero-art-label">PRACTICE / CONTINUOUS</span></div>
       </section>
 
       <section className="coding-chapter coding-platform-chapter" aria-labelledby="coding-platforms-title"><div className="coding-chapter-heading"><p className="world-kicker"><span>02</span> / PLATFORMS / DISTINCT SIGNALS</p><h2 id="coding-platforms-title">Two primary<br /><i>ways of thinking.</i></h2><p>CodeChef carries the contest trajectory. LeetCode carries a second practice rhythm. The smaller profiles complete the picture without pretending they are the same kind of evidence.</p></div><div className="coding-primary-grid">{primary.map((platform) => <PlatformProfile key={platform.platform} platform={platform} primary />)}</div><div className="coding-secondary-row">{secondary.map((platform) => <PlatformProfile key={platform.platform} platform={platform} />)}</div></section>
 
-      <section className="coding-chapter coding-trajectory-chapter" aria-labelledby="codechef-title"><div className="coding-chapter-heading coding-chapter-heading-split"><div><p className="world-kicker"><span>03</span> / CODECHEF / RATING TRAJECTORY</p><h2 id="codechef-title">A curve is<br /><i>better than a badge.</i></h2></div><p>The verified CodeChef history moves from 623 to 1455 across the recorded contests. The line is the story; the endpoint is only the latest frame.</p></div><div className="coding-trajectory-art"><svg viewBox="0 0 100 100" preserveAspectRatio="none" role="img" aria-label="CodeChef rating progression from 623 to 1455"><defs><linearGradient id="trajectory-line" x1="0" x2="1"><stop stopColor="#65dedb" /><stop offset=".6" stopColor="#7aa2ff" /><stop offset="1" stopColor="#f5b759" /></linearGradient></defs><polyline points={points} fill="none" stroke="url(#trajectory-line)" strokeWidth="1.1" vectorEffect="non-scaling-stroke" /></svg><div className="coding-trajectory-glow" aria-hidden="true" /><div className="coding-trajectory-axis"><span>623 / SEP 2025</span><span>1455 / AUG 2026</span></div></div><ol className="coding-milestones" aria-label="Selected CodeChef rating milestones"><li><b>623</b><span>first recorded point</span></li><li><b>1108</b><span>Starters 216</span></li><li><b>1400</b><span>Starters 236</span></li><li><b>1455</b><span>latest recorded point</span></li></ol></section>
+      <section className="coding-chapter coding-trajectory-chapter" aria-labelledby="codechef-title">
+        <div className="coding-chapter-heading coding-chapter-heading-split">
+          <div>
+            <p className="world-kicker"><span>03</span> / CODECHEF / RATING TRAJECTORY</p>
+            <h2 id="codechef-title">A curve is<br /><i>better than a badge.</i></h2>
+          </div>
+          <p>
+            One recorded contest per point, from Starters 202 to the last contest
+            captured in the series ({CODECHEF_HISTORY_LAST.contest}). This is history,
+            not a live reading: the current CodeChef rating is
+            <b>{number(codechef?.rating)}</b>. The two differ because contests have
+            been rated since the series was captured.
+          </p>
+        </div>
+        <div className="coding-trajectory-art">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" role="img"
+            aria-label={"CodeChef rating recorded at each contest, from " + codechefRatingHistory[0].rating + " to " + CODECHEF_HISTORY_LAST.rating}>
+            <defs><linearGradient id="trajectory-line" x1="0" x2="1"><stop stopColor="#65dedb" /><stop offset=".6" stopColor="#7aa2ff" /><stop offset="1" stopColor="#f5b759" /></linearGradient></defs>
+            <polyline points={points} fill="none" stroke="url(#trajectory-line)" strokeWidth="1.1" vectorEffect="non-scaling-stroke" />
+          </svg>
+          <div className="coding-trajectory-glow" aria-hidden="true" />
+          <div className="coding-trajectory-axis">
+            <span>{codechefRatingHistory[0].rating} / {codechefRatingHistory[0].date}</span>
+            <span>{CODECHEF_HISTORY_LAST.rating} / {CODECHEF_HISTORY_LAST.date}</span>
+          </div>
+        </div>
+        <ol className="coding-milestones" aria-label="Selected CodeChef rating milestones">
+          {codechefRatingHistory
+            .filter((_, index) => index % 3 === 0 || index === codechefRatingHistory.length - 1)
+            .map((point) => (
+              <li key={point.contest}><b>{point.rating}</b><span>{point.contest}</span></li>
+            ))}
+        </ol>
+      </section>
 
       <section className="coding-chapter coding-comparison" aria-labelledby="comparison-title"><div className="coding-chapter-heading"><p className="world-kicker"><span>04</span> / COMPARISON / TWO SIGNALS</p><h2 id="comparison-title">Different arenas.<br /><i>Same discipline.</i></h2></div><div className="coding-comparison-grid">{[codechef, leetcode].filter(Boolean).map((platform) => <article key={platform!.platform} className="coding-comparison-line" style={{ "--profile-accent": platform!.color } as React.CSSProperties}><div><span>{platform!.platform}</span><b>{number(platform!.rating)}</b></div><div className="coding-comparison-rule"><i style={{ width: `${Math.min(100, ((platform!.rating ?? 0) / 1800) * 100)}%` }} /></div><p>{number(platform!.solvedTotal)} solved · {number(platform!.contests)} contests{typeof platform!.maxStreak === "number" ? ` · ${number(platform!.maxStreak)}-day streak` : ""}</p></article>)}</div></section>
 

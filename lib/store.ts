@@ -1,5 +1,8 @@
 import { promises as fs } from "fs";
 import path from "path";
+import type { Freshness } from "./types";
+
+export type { Freshness } from "./types";
 
 /**
  * Tiny JSON file store used for caches + analytics persistence.
@@ -51,25 +54,32 @@ export async function writeJson<T>(key: string, value: T): Promise<void> {
   }
 }
 
-export type Freshness =
-  | "live"
-  | "recent"
-  | "synced"
-  | "stale"
-  | "unavailable";
-
 /**
- * Map an age in ms to a freshness label. Thresholds are intentionally simple:
- * live = <1min (just-synced), recent = under TTL,
- * stale = up to 2×TTL, synced-but-old / unavailable otherwise.
+ * Map an age in ms to a freshness label.
+ *
+ * Thresholds are expressed relative to the source TTL, with one absolute
+ * floor at a week. The previous version had two branches that both returned
+ * "stale", which meant `synced` was unreachable and a two-day-old snapshot was
+ * indistinguishable from a week-old one. Both are now distinct states:
+ *
+ *   live        < 1 minute          re-fetched just before this request
+ *   recent      < TTL               comfortably inside the refresh window
+ *   synced      < 2x TTL            past the window, still recent enough
+ *   stale       < 7 days            showing an older successful snapshot
+ *   very-stale  >= 7 days           snapshot is old enough to distrust
+ *   unavailable no age at all       never synchronised in this process
  */
 export function freshnessFor(ageMs: number | null, ttlMs: number): Freshness {
-  if (ageMs === null) return "unavailable";
+  if (ageMs === null || !Number.isFinite(ageMs)) return "unavailable";
   if (ageMs < 60_000) return "live";
   if (ageMs < ttlMs) return "recent";
-  if (ageMs < ttlMs * 2) return "stale";
-  return "stale";
+  if (ageMs < ttlMs * 2) return "synced";
+  if (ageMs < SEVEN_DAYS_MS) return "stale";
+  return "very-stale";
 }
+
+/** Absolute freshness ceiling, independent of the per-source TTL. */
+export const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
 
 export function nowIso(): string {
   return new Date().toISOString();

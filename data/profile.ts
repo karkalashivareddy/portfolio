@@ -1,3 +1,5 @@
+import { codingAggregate, codingPlatformsFallback } from "./coding";
+
 export const profile = {
   name: "Karkala Shiva Reddy",
   displayName: "Shiva Reddy",
@@ -49,21 +51,28 @@ export const socials: import("../lib/types").Socials = {
 };
 
 /**
- * A dated fallback snapshot of coding-practice totals, used only when the live
- * Codolio sync has not run.
+ * Coding totals, derived — never hand-written.
  *
- * These are **not** treated as verified facts. They are a September 2026
- * snapshot, they already disagreed with an older copy of the profile README that
- * claimed 2,531 problems and a 91-day streak, and nothing keeps them in step
- * with the platforms. Nothing in the generated profile README prints them.
- * Prefer the live aggregate from `data/coding.ts` / `lib/codolio.ts`.
+ * This object used to be a second, independently-edited copy of the same facts
+ * that live in `data/coding.ts`, and the two drifted: the copy here said 2,613
+ * problems / 36 contests / 100 days while the other said different numbers, and
+ * neither matched the platforms. Two constants for one fact is how a page ends
+ * up confidently wrong.
+ *
+ * It is now computed from the committed snapshot, so there is exactly one place
+ * to refresh. `isFallbackSnapshot` and `asOf` travel with it so any consumer can
+ * label the figures with the date they were actually verified.
+ *
+ * Prefer passing a synchronized `CodingSnapshot` from a server component; this
+ * exists for components that cannot receive one.
  */
 export const verifiedNumbers = {
-  problemsSolved: 2613,
-  platforms: 5,
-  codechefContests: 36,
-  codingStreakDays: 100,
-  source: "Codolio",
-  asOf: "2026-09-16",
+  problemsSolved: codingAggregate.totalSolved,
+  platforms: codingAggregate.platforms,
+  codechefContests:
+    codingPlatformsFallback.find((platform) => platform.platform === "CodeChef")?.contests ?? 0,
+  codingStreakDays: codingAggregate.maxStreak,
+  source: codingAggregate.source,
+  asOf: codingAggregate.asOf,
   isFallbackSnapshot: true,
 } as const;

@@ -13,6 +13,14 @@
 # testing
 /coverage
 
+# Playwright
+/test-results
+/playwright-report
+/blob-report
+/playwright/.cache
+# fixture snapshots published for the running e2e server (regenerated per test)
+/e2e/.state
+
 # next.js
 /.next/
 /out/

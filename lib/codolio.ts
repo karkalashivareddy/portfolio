@@ -1,17 +1,14 @@
-import type { CodingAggregate, CodingPlatform, SyncMeta } from "./types";
+import type { CodingAggregate, CodingPlatform, CodingSnapshot } from "./types";
 import { config } from "./config";
 import { readJson, writeJson, nowIso, freshnessFor, ageMs } from "./store";
+import { readFixture } from "./fixtures";
 import {
   codingPlatformsFallback,
   codingAggregate,
+  codingProfileViewsFallback,
 } from "../data/coding";
 
-export interface CodolioSnapshot {
-  platforms: CodingPlatform[];
-  aggregate: CodingAggregate;
-  profileViews: number;
-  meta: SyncMeta;
-}
+export type CodolioSnapshot = CodingSnapshot;
 
 const CACHE_KEY = `codolio:${config.codolio.userKey}`;
 
@@ -76,6 +73,7 @@ function platformColor(platform: string): string {
 }
 
 function normalize(raw: RawCodolio): CodolioSnapshot {
+  const fetchedAt = nowIso();
   const list = raw.data?.platformProfiles?.platformProfiles ?? [];
   const platforms: CodingPlatform[] = list
     .filter((p) => p.userStats?.handle)
@@ -91,7 +89,12 @@ function normalize(raw: RawCodolio): CodolioSnapshot {
         hard: qs?.hardQuestionCounts ?? undefined,
         rating: p.userStats.currentRating ?? undefined,
         maxRating: p.userStats.maxRating ?? undefined,
+        // Both are reported. The previous build kept only `dsaRating`, which
+        // meant a peak DSA rating (1738) could never be distinguished from the
+        // current one (1494).
         dsaRating: p.userStats.dsaRating ?? undefined,
+        maxDsaRating: p.userStats.maxDsaRating ?? undefined,
+        stars: p.userStats.stars ?? undefined,
         contests: p.contestActivityStats?.contestActivityList?.length,
         maxStreak: p.dailyActivityStatsResponse?.maxStreak ?? undefined,
         badges: p.badgeStats?.badgeList?.length
@@ -114,7 +117,7 @@ function normalize(raw: RawCodolio): CodolioSnapshot {
     contests,
     maxStreak,
     source: "Codolio",
-    asOf: nowIso().slice(0, 10),
+    asOf: fetchedAt.slice(0, 10),
   };
 
   return {
@@ -122,20 +125,36 @@ function normalize(raw: RawCodolio): CodolioSnapshot {
     aggregate,
     profileViews: raw.data?.profileViews ?? 0,
     meta: {
-      fetchedAt: nowIso(),
-      lastSuccessfulSync: nowIso(),
+      fetchedAt,
+      lastSuccessfulSync: fetchedAt,
       lastFailedSync: null,
-      status: "recent",
+      status: "live",
+      origin: "api",
     },
   };
 }
 
+/**
+ * Degraded state: the API is unreachable and there is no cached copy.
+ *
+ * The committed snapshot is returned with its real synchronization date and
+ * `origin: "snapshot"`, so the UI can say "Verified snapshot · 6 Oct" instead of
+ * implying either live data or a total absence of data.
+ */
 function fallbackSnapshot(error: string | null): CodolioSnapshot {
+  const at = `${codingAggregate.asOf}T00:00:00.000Z`;
   return {
     platforms: codingPlatformsFallback,
     aggregate: codingAggregate,
-    profileViews: 29,
-    meta: { fetchedAt: null, lastSuccessfulSync: null, lastFailedSync: nowIso(), status: "unavailable", error },
+    profileViews: codingProfileViewsFallback,
+    meta: {
+      fetchedAt: at,
+      lastSuccessfulSync: at,
+      lastFailedSync: nowIso(),
+      status: "very-stale",
+      origin: "snapshot",
+      error,
+    },
   };
 }
 
@@ -148,26 +167,28 @@ function staleFrom(cached: CodolioSnapshot, error: string): CodolioSnapshot {
       lastSuccessfulSync: cached.meta.lastSuccessfulSync,
       lastFailedSync: nowIso(),
       status: freshnessFor(age, config.codolio.ttlMs),
+      origin: cached.meta.origin ?? "api",
       error,
     },
   };
 }
 
 export async function getCodolioSnapshot(forceSync = false): Promise<CodolioSnapshot> {
+  // Test-only seam, inactive unless PORTFOLIO_TEST_FIXTURES=1 (see lib/fixtures).
+  const fixture = await readFixture<CodolioSnapshot>("codolio", config.codolio.ttlMs);
+  if (fixture) return fixture;
+
   const cached = await readJson<CodolioSnapshot>(CACHE_KEY);
   const age = ageMs(cached?.meta?.fetchedAt);
 
   if (!forceSync && cached && age !== null && age < config.codolio.ttlMs) {
-    const today = nowIso().slice(0, 10);
-    const aggregate: CodingAggregate = {
-      totalSolved: cached.aggregate.totalSolved,
-      platforms: cached.aggregate.platforms,
-      contests: cached.aggregate.contests,
-      maxStreak: cached.aggregate.maxStreak,
-      source: "Codolio",
-      asOf: today,
+    // `asOf` is preserved rather than refreshed to today. It records when these
+    // figures were read from the API; stamping it with the current date on every
+    // cache hit would claim a measurement that never happened.
+    return {
+      ...cached,
+      meta: { ...cached.meta, status: freshnessFor(age, config.codolio.ttlMs) },
     };
-    return { ...cached, aggregate, meta: { ...cached.meta, status: freshnessFor(age, config.codolio.ttlMs) } };
   }
 
   if (inflight) return inflight;

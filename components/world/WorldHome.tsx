@@ -3,12 +3,13 @@
 import Link from "next/link";
 import { ArrowDownRight, ArrowUpRight, ExternalLink } from "lucide-react";
 import { useState } from "react";
-import { codingAggregate } from "../../data/coding";
 import { featuredProjects, projects } from "../../data/projects";
-import { profile, socials, verifiedNumbers } from "../../data/profile";
+import { profile, socials } from "../../data/profile";
 import { engineeringGraph } from "../../data/engineeringGraph";
 import { timeline } from "../../data/timeline";
+import type { CodingSnapshot } from "../../lib/types";
 import EmailCopyButton from "../ui/EmailCopyButton";
+import SyncStatus from "../ui/SyncStatus";
 import MasterWorldCanvas from "./MasterWorldCanvas";
 
 const chapters = [
@@ -25,36 +26,187 @@ function KineticWords() {
   return <h1 className="x2-hero-title"><span>COMPUTER</span><span className="x2-word-offset">SCIENCE</span><span className="x2-word-outline">ENGINEER<span className="x2-dot">.</span></span></h1>;
 }
 
-function SignalScene() {
-  const values = [
-    ["01", "CodeChef", "1,976", "#b8ee4a"], ["02", "LeetCode", "276", "#54e5ff"],
-    ["03", "GFG", "246", "#32d583"], ["04", "HackerRank", "75", "#ffb347"], ["05", "Codeforces", "40", "#ee4da9"],
-  ] as const;
-  return <section id="signal" className="x2-section x2-signal">
-    <div className="x2-wrap"><ChapterMark number="02" title="THE SIGNAL" note="practice becomes visible" />
-      <div className="x2-signal-intro"><p className="x2-kicker">{codingAggregate.source} / verified aggregate / {codingAggregate.asOf}</p><div className="x2-signal-total">{verifiedNumbers.problemsSolved.toLocaleString("en-US")}</div><p className="x2-signal-caption">accepted solutions across {verifiedNumbers.platforms} platforms<span>not a badge — a habit</span></p></div>
-      <div className="x2-stream-list">{values.map(([index, platform, total, color]) => <a key={platform} href={platform === "CodeChef" ? "https://www.codechef.com/users/shivareddy_27" : "/coding"} target={platform === "CodeChef" ? "_blank" : undefined} rel={platform === "CodeChef" ? "noreferrer" : undefined} className="x2-stream" style={{ "--stream-color": color } as React.CSSProperties}><span>{index}</span><strong>{platform}</strong><i /><b>{total}</b><ArrowUpRight size={15} /></a>)}</div>
-      <div className="x2-signal-foot"><span>{codingAggregate.contests} rated contests</span><span>{codingAggregate.maxStreak}-day longest streak</span><Link href="/coding">Read the full record <ArrowUpRight size={14} /></Link></div>
-    </div>
-  </section>;
+/** Accent colour per platform id, used by the signal stream. */
+const STREAM_COLORS: Record<string, string> = {
+  codechef: "#b8ee4a",
+  leetcode: "#54e5ff",
+  geeksforgeeks: "#32d583",
+  hackerrank: "#ffb347",
+  codeforces: "#ee4da9",
+};
+
+/**
+ * Coding figures come from the synchronized snapshot passed in by the server.
+ *
+ * This previously rendered a literal list — CodeChef 1,976, LeetCode 276, GFG
+ * 246, HackerRank 75, Codeforces 40 — that had gone stale and disagreed with the
+ * total rendered directly above it. Reading the per-platform values out of the
+ * same snapshot the total comes from makes that class of bug impossible.
+ */
+function SignalScene({ snapshot }: { snapshot: CodingSnapshot }) {
+  const { aggregate, meta, platforms } = snapshot;
+  const streams = platforms
+    .filter((platform) => typeof platform.solvedTotal === "number")
+    .map((platform) => ({
+      name: displayPlatformName(platform.platform),
+      solved: platform.solvedTotal as number,
+      color: STREAM_COLORS[platform.platform.toLowerCase()] ?? "#7aa2ff",
+      url: platform.url,
+    }));
+
+  return (
+    <section id="signal" className="x2-section x2-signal">
+      <div className="x2-wrap">
+        <ChapterMark number="02" title="THE SIGNAL" note="practice becomes visible" />
+        <div className="x2-signal-intro">
+          <p className="x2-kicker">
+            {aggregate.source} / synchronized {aggregate.asOf}
+          </p>
+          <div className="x2-signal-total">{aggregate.totalSolved.toLocaleString("en-US")}</div>
+          <p className="x2-signal-caption">
+            accepted solutions across {aggregate.platforms} platforms
+            <span>not a badge — a habit</span>
+          </p>
+          <SyncStatus
+            className="mt-3"
+            status={meta.status}
+            fetchedAt={meta.fetchedAt}
+            lastSuccessfulSync={meta.lastSuccessfulSync}
+            origin={meta.origin}
+            label={aggregate.source}
+          />
+        </div>
+        <div className="x2-stream-list">
+          {streams.map((stream, index) => (
+            <a
+              key={stream.name}
+              href={stream.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="x2-stream"
+              style={{ "--stream-color": stream.color } as React.CSSProperties}
+            >
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <strong>{stream.name}</strong>
+              <i />
+              <b>{stream.solved.toLocaleString("en-US")}</b>
+              <ArrowUpRight size={15} />
+            </a>
+          ))}
+        </div>
+        <div className="x2-signal-foot">
+          <span>{aggregate.contests} rated contests</span>
+          <span>{aggregate.maxStreak}-day longest streak</span>
+          <Link href="/coding">
+            Read the full record <ArrowUpRight size={14} />
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
 }
 
-function Architecture({ className = "" }: { className?: string }) {
-  const steps = ["REACT", "REST API", "EXPRESS", "MONGOOSE", "MONGODB", "ANALYTICS"];
-  return <div className={`x2-architecture ${className}`} aria-label="PharmaStock generated architecture visualization">
-    {steps.map((step, index) => <div key={step} className={`x2-arch-node x2-arch-${index + 1}`}><small>0{index + 1}</small><strong>{step}</strong>{index < steps.length - 1 && <i>→</i>}</div>)}
-    <div className="x2-arch-pulse" />
-  </div>;
+function displayPlatformName(id: string): string {
+  const map: Record<string, string> = {
+    codechef: "CodeChef",
+    leetcode: "LeetCode",
+    geeksforgeeks: "GFG",
+    hackerrank: "HackerRank",
+    codeforces: "Codeforces",
+  };
+  return map[id.toLowerCase()] ?? id;
+}
+
+/**
+ * The flagship stage.
+ *
+ * This used to hardcode the heading "PHARMASTOCK" and an Express -> Mongoose ->
+ * MongoDB chain while taking its tagline and summary from `featuredProjects[0]`.
+ * When CAPS was made the first flagship the section therefore described a C
+ * process engine under a medicine-inventory title, which is exactly the kind of
+ * mismatch that makes a portfolio look assembled rather than maintained.
+ *
+ * The title and the architecture chain are both taken from the project being
+ * featured now, so reordering `data/projects.ts` can no longer desynchronise
+ * this section from the case study it links to.
+ */
+function Architecture({ steps, label }: { steps: string[]; label: string }) {
+  return (
+    <div className="x2-architecture" aria-label={`${label} architecture: ${steps.join(" to ")}`}>
+      {steps.map((step, index) => (
+        <div key={step} className={`x2-arch-node x2-arch-${index + 1}`}>
+          <small>0{index + 1}</small>
+          <strong>{step}</strong>
+          {index < steps.length - 1 && <i>→</i>}
+        </div>
+      ))}
+      <div className="x2-arch-pulse" />
+    </div>
+  );
 }
 
 function WorkScene() {
   const flagship = featuredProjects[0];
-  return <section id="work" className="x2-section x2-work"><div className="x2-wrap"><ChapterMark number="03" title="THE WORK" note="systems with a reason to exist" />
-    <div className="x2-work-heading"><div><p className="x2-kicker">FLAGSHIP / ACADEMIC BUILD / GENERATED VISUALIZATION</p><h2>PHARMA<span>STOCK</span></h2></div><p>{flagship.tagline}</p></div>
-    <div className="x2-project-stage"><div className="x2-project-atmosphere" /><div className="x2-project-window"><span className="x2-window-label">INVENTORY / GENERATED VISUALIZATION</span><div className="x2-metric-row"><b>STOCK</b><span>batch-aware medicine inventory</span></div><div className="x2-bars"><i /><i /><i /><i /><i /><i /></div><div className="x2-window-footer"><span>LOW STOCK</span><span>EXPIRY</span><span>SUPPLIERS</span></div></div><Architecture /></div>
-    <div className="x2-project-caption"><p>{flagship.summary}</p><Link href={`/projects/${flagship.slug}`} data-magnetic>Open the case study <ArrowUpRight size={16} /></Link></div>
-    <div className="x2-project-list">{projects.slice(1).map((project, index) => <Link key={project.slug} href={`/projects/${project.slug}`} className="x2-project-row" data-cursor="EXPLORE"><span>0{index + 2}</span><strong>{project.title.replace(" — ", " / ")}</strong><small>{project.type} · {project.status}</small><ArrowUpRight size={18} /></Link>)}</div>
-  </div></section>;
+  // Cap the chain at six nodes: the diagram has six slots, and a longer stack
+  // would silently drop entries rather than render them.
+  const steps = flagship.stack.slice(0, 6).map((item) => item.split("/")[0].trim());
+  return (
+    <section id="work" className="x2-section x2-work">
+      <div className="x2-wrap">
+        <ChapterMark number="03" title="THE WORK" note="systems with a reason to exist" />
+        <div className="x2-work-heading">
+          <div>
+            <p className="x2-kicker">FLAGSHIP / {flagship.status.toUpperCase()} BUILD / GENERATED VISUALIZATION</p>
+            <h2>
+              {flagship.title
+                .split("—")
+                .map((part, index) => (index === 1 ? <span key={part}>{part.trim()}</span> : part.trim() + " "))}
+            </h2>
+          </div>
+          <p>{flagship.tagline}</p>
+        </div>
+        <div className="x2-project-stage">
+          <div className="x2-project-atmosphere" />
+          <div className="x2-project-window">
+            <span className="x2-window-label">{flagship.type.toUpperCase()} / GENERATED VISUALIZATION</span>
+            <div className="x2-metric-row">
+              <b>{flagship.rank === "S" ? "FLAGSHIP" : flagship.rank}</b>
+              <span>{flagship.tagline}</span>
+            </div>
+            <div className="x2-bars">
+              {flagship.stack.slice(0, 6).map((item) => (
+                <i key={item} />
+              ))}
+            </div>
+            <div className="x2-window-footer">
+              {flagship.tags.slice(0, 3).map((tag) => (
+                <span key={tag}>{tag}</span>
+              ))}
+            </div>
+          </div>
+          <Architecture steps={steps} label={flagship.title} />
+        </div>
+        <div className="x2-project-caption">
+          <p>{flagship.summary}</p>
+          <Link href={`/projects/${flagship.slug}`} data-magnetic aria-label={`Open the ${flagship.title} case study`}>
+            Open the case study <ArrowUpRight size={16} />
+          </Link>
+        </div>
+        <div className="x2-project-list">
+          {projects.slice(1).map((project, index) => (
+            <Link key={project.slug} href={`/projects/${project.slug}`} className="x2-project-row" data-cursor="EXPLORE">
+              <span>0{index + 2}</span>
+              <strong>{project.title.replace(" — ", " / ")}</strong>
+              <small>
+                {project.type} · {project.status}
+              </small>
+              <ArrowUpRight size={18} />
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 }
 
 function SystemsScene() {
@@ -109,11 +261,11 @@ function ContactScene() {
   return <section id="contact" className="x2-section x2-contact"><div className="x2-contact-orbit" /><div className="x2-wrap"><ChapterMark number="09" title="THE NEXT MOVE" note="chaos → silence" /><div className="x2-contact-copy"><p className="x2-kicker">open channel / {profile.location}</p><h2>LET&apos;S BUILD<br /><em>SOMETHING.</em></h2><p>{profile.headline}</p><EmailCopyButton className="x2-email" showMailto data-magnetic data-cursor="LET'S GO">{socials.email} <ArrowUpRight size={18} /></EmailCopyButton><div className="x2-contact-links"><a href={socials.github.url} target="_blank" rel="noreferrer">GitHub <ExternalLink size={13} /></a><a href={socials.linkedin.url} target="_blank" rel="noreferrer">LinkedIn <ExternalLink size={13} /></a><a href={socials.codolio.url} target="_blank" rel="noreferrer">Codolio <ExternalLink size={13} /></a></div></div></div></section>;
 }
 
-export default function WorldHome() {
-  return <main className="x2-home is-loaded">
+export default function WorldHome({ snapshot }: { snapshot: CodingSnapshot }) {
+  return <div className="x2-home is-loaded">
     <MasterWorldCanvas />
     <aside className="x2-chapter-rail" aria-label="World chapters">{chapters.map(([id, label], index) => <a key={id} href={`#${id}`}><span>0{index + 1}</span>{label}</a>)}</aside>
     <section id="origin" className="x2-hero"><div className="x2-wrap x2-hero-grid"><div className="x2-hero-copy"><p className="x2-kicker">01 / ARRIVAL / {profile.name.toUpperCase()}</p><KineticWords /><p className="x2-hero-lead">{profile.headline}</p><div className="x2-actions"><Link href="#work" className="x2-button x2-button-primary" data-magnetic data-cursor="ENTER WORLD">Enter the world <ArrowDownRight size={16} /></Link><Link href="/projects" className="x2-text-link" data-cursor="VIEW WORK">See the work <ArrowUpRight size={15} /></Link></div></div><div className="x2-hero-readout"><span>ENGINEERING UNIVERSE</span><b>CORE / ONLINE</b><small>Move, scroll, discover<br />a system in motion.</small></div><div className="x2-mobile-core" aria-hidden="true"><i /><b /><span>DSA</span><span>BACKEND</span><span>LINUX</span><span>DATA</span></div></div><a className="x2-scroll-cue" href="#signal"><span>scroll to travel</span><ArrowDownRight size={15} /></a></section>
-    <SignalScene /><WorkScene /><SystemsScene /><GitHubScene /><AboutScene /><JourneyScene /><LearningScene /><ContactScene />
-  </main>;
+    <SignalScene snapshot={snapshot} /><WorkScene /><SystemsScene /><GitHubScene /><AboutScene /><JourneyScene /><LearningScene /><ContactScene />
+  </div>;
 }

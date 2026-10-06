@@ -62,7 +62,7 @@ export const timeline: TimelineEntry[] = [
     date: "Ongoing",
     title: "Competitive programming campaign",
     detail:
-      "37+ CodeChef rated contests (rating 623 → 1474), 15 LeetCode contests, 100-day streaks — synced from Codolio.",
+      "40 CodeChef rated contests (DSA rating 1494, peak 1738), 19 LeetCode contests, 119-day longest streak — synced from Codolio.",
     kind: "milestone",
     source: "Codolio profile",
   },

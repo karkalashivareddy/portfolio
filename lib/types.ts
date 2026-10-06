@@ -57,8 +57,11 @@ export interface CodingPlatform {
   rating?: number;
   maxRating?: number;
   dsaRating?: number;
+  /** Peak DSA rating. Distinct from `dsaRating`, which is the current value. */
+  maxDsaRating?: number;
   contests?: number;
   maxStreak?: number;
+  stars?: number;
   badges?: string[];
   certificates?: string[];
   languages?: string[];
@@ -72,7 +75,27 @@ export interface CodingAggregate {
   contests: number;
   maxStreak: number;
   source: string;
+  /**
+   * ISO date (YYYY-MM-DD) on which this snapshot was synchronized from the
+   * upstream API. Not the date the underlying data describes.
+   */
   asOf: string;
+}
+
+/**
+ * Everything needed to render coding metrics, and nothing else.
+ *
+ * Declared here rather than reusing the loader's own return type so that the
+ * shape crossing the server/client boundary is explicit and JSON-safe. A
+ * server component reads this and hands it to client components as props,
+ * which removes the client-side fetch entirely: no waterfall, no second request,
+ * and no flash of stale numbers before the real ones arrive.
+ */
+export interface CodingSnapshot {
+  platforms: CodingPlatform[];
+  aggregate: CodingAggregate;
+  profileViews: number;
+  meta: SyncMeta;
 }
 
 export interface TimelineEntry {
@@ -92,19 +115,41 @@ export interface Socials {
 
 // ---- Live system types ----
 
+/**
+ * Freshness of an externally synchronized value.
+ *
+ * The vocabulary is deliberately explicit because the whole point is that a
+ * reader can tell synchronized data from static profile data. Note that
+ * `live` does not mean "pushed continuously" — it means "re-fetched within the
+ * last minute of this request". The deployment is a serverless/static host, so
+ * nothing is pushed in the background; see docs/deployment.md.
+ */
 export type Freshness =
+  /** Fetched within the last minute of this request. */
   | "live"
+  /** Fetched within the configured TTL. */
   | "recent"
+  /** Fetched within 2x the TTL. */
   | "synced"
+  /** Older than 2x the TTL but a successful snapshot is still being shown. */
   | "stale"
+  /** Older than 7 days. */
+  | "very-stale"
+  /** No successful sync has ever happened in this process. */
   | "unavailable";
 
 export interface SyncMeta {
-  fetchedAt: string | null; // ISO
+  /** ISO timestamp of the snapshot currently being displayed. */
+  fetchedAt: string | null;
+  /** ISO timestamp of the most recent successful upstream fetch. */
   lastSuccessfulSync: string | null;
+  /** ISO timestamp of the most recent failed upstream fetch. */
   lastFailedSync: string | null;
   status: Freshness;
+  /** Human-readable reason, set when a fetch failed. Never user-supplied. */
   error?: string | null;
+  /** Where the displayed values came from: an API, or the committed snapshot. */
+  origin?: "api" | "snapshot";
 }
 
 export interface GithubRepo {
@@ -135,6 +180,13 @@ export interface GithubSnapshot {
   profile: GithubProfile;
   repos: GithubRepo[];
   meta: SyncMeta;
+}
+
+/** Aggregate counters derived from a repository list, not stored separately. */
+export interface GithubCounts {
+  stars: number;
+  forks: number;
+  languages: Record<string, number>;
 }
 
 export interface AnalyticsTotals {

@@ -31,17 +31,13 @@ app/
   admin/analytics/page.tsx admin analytics
   api/                    route handlers (github, codolio, admin, analytics, readme, sync, webhooks)
 components/
-  hero/           Hero, HeroReveal, EngineerGraph
-  home/           FeaturedProjects, ProofStrip, Capabilities, ContactBlock, CodingHighlights,
-                  GitHubHighlights, JourneyBlock, LearningRoadmap, TimelineRail, FlagProject, LiveSection
-  layout/         Nav, Footer, Container, CommandPalette, ScrollProgress, FXScene, SiteShell,
-                  ChapterRail, SceneDivider, WorldField
-  projects/       ProjectCard, ProjectDetail, CaseStudyBody, CaseStudyStage, CaseStudyVisual, FlowDiagram
-  coding/         CodingOverview, CodingGoals, CodingRouteLive, CodingVerdict, RatingChart
-  github/         GitHubRepos, GitHubArchive
+  layout/         Nav, Footer, CommandPalette, SiteShell, WorldField
+  projects/       ProjectDetail, CaseStudyStage, CaseStudyVisual, FlowDiagram
+  coding/         CodingRouteLive
+  github/         GitHubArchive
   admin/          AdminGate, AdminLogin, AdminPanel, AnalyticsPanel, SettingsPanel
-  ui/             Button, Pill, SectionHeader, StatBlock, Reveal, CursorFx, BrandIcons,
-                  EmailCopyButton, ProfileViews, SyncStatus, TelemetryReadout
+  ui/             Button, StatBlock, Reveal, CursorFx, BrandIcons, EmailCopyButton,
+                  SyncStatus
   world/          MasterWorldCanvas, WorldHome
   visual-lab/     VisualLab
 data/
@@ -68,7 +64,12 @@ lib/
   readme.ts       readme generation
   site.ts         site-wide constants
   format.ts       formatting utilities
-  store.ts        client-side state store
+  store.ts        JSON cache + freshness thresholds (used by the data loaders)
+  fixtures.ts     test-only snapshot seam, active only with PORTFOLIO_TEST_FIXTURES=1
+e2e/
+  fixtures.ts     recorded upstream payloads + state helpers
+  smoke.spec.ts   browser smoke suite against `next start`
+  freshness.spec.ts  synchronized / stale / snapshot presentation
 ```
 
 ## 2. Data architecture
