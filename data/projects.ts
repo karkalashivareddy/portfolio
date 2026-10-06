@@ -2,67 +2,144 @@ import type { Project } from "../lib/types";
 
 export type { ProjectClass } from "../lib/types";
 
+/**
+ * Project order is deliberate and matches the GitHub profile: CAPS, ForgeSense,
+ * LogInsight, PharmaStock. Those four are the flagship work; everything after
+ * them is coursework kept for breadth.
+ *
+ * Every description here is written against the repository as it actually is.
+ * In particular CAPS is a complete, tested C engine (not an abstract or a plan)
+ * and PharmaStock ships a working Express/MongoDB backend (not a service layer
+ * awaiting one). Both were previously described the other way round, which
+ * understated the work and, for CAPS, described a repository that exists as
+ * documentation-only.
+ */
 export const projects: Project[] = [
   {
-    slug: "pharmastock-medicine-stock-management",
-    title: "PharmaStock — Medicine Stock Management",
-    tagline:
-      "Pharmaceutical inventory with batch tracking, expiry/low-stock intelligence and analytics.",
-    type: "Product/Frontend",
+    slug: "command-argument-passing-system",
+    title: "CAPS — Command Argument Passing System",
+    tagline: "Linux process execution and observability",
+    type: "Backend/Systems",
     rank: "S",
     class: "flagship",
     featured: true,
     kind: "case-study",
     status: "academic",
     summary:
-      "A 17-page React portal for pharmaceutical inventory: medicine/supplier/batch management, purchase & sales records, role-based access, near-expiry and low-stock monitoring, and a Recharts analytics dashboard — built on a service layer engineered to swap demo data for a real Express/Mongo backend.",
+      "A C11/POSIX process execution observatory. An allowlisted command runs through a real fork/execvp/waitpid lifecycle in a compiled C engine; a Fastify gateway samples the tracked child from /proc, persists a validated event stream to SQLite, and a React console renders it live and in replay.",
     problem:
-      "Pharmacy staff need live visibility of stock, expiring batches and low-stock items to avoid shortages and wasted medicines.",
+      "Command execution hides almost everything interesting. You see an exit code, but not whether exec succeeded, what argv the program actually received, whether the PID was still the same process, or what its RSS and CPU counters did during the run.",
     solution:
-      "A centralized inventory product with batch-wise tracking, transactional records, role-based dashboards and analytics.",
+      "Structured argv is validated once and passed to the engine with shell: false, so there is no shell and no second lexer to disagree with the engine. Process identity is PID plus kernel start time at every layer, so a recycled PID cannot be mistaken for the original child.",
     stack: [
+      "C11 / POSIX",
+      "Linux /proc",
+      "Fastify",
+      "TypeScript",
+      "SQLite",
+      "Server-Sent Events",
       "React",
       "Vite",
-      "Recharts",
-      "lucide-react",
-      "react-router-dom",
-      "CSS3",
-      "Node.js",
-      "Express",
-      "MongoDB / Mongoose",
-      "JWT",
     ],
-    github:
-      "https://github.com/karkalashivareddy/DataBase-System-and-Distributed-Backend-Development",
+    github: "https://github.com/karkalashivareddy/Command-Argument-Passing-System",
     statusNote:
-      "Academic project (Database Systems & Distributed Backend course). Frontend ships runnable on demo data; the API service layer is ready for the Express/Mongo backend.",
-    accent: "#5b8def",
-    tags: ["React", "Vite", "Recharts", "Full-stack", "Databases"],
+      "Sampling follows one tracked child by design; descendants are not discovered. It is not a sandbox and not a production security boundary. Verified by 260 C assertions across 16 shell suites under gcc and again under ASan/UBSan, 450 gateway tests, 247 frontend tests, and a browser smoke suite against the production build.",
+    accent: "#34d399",
+    tags: ["C", "POSIX", "Systems", "Observability", "Security"],
   },
   {
-    slug: "command-argument-passing-system",
-    title: "Command Argument Passing System",
-    tagline:
-      "Project abstract for a planned C/Linux fork-exec argument-passing utility.",
-    type: "Academic",
-    rank: "C",
-    class: "supporting",
-    featured: false,
+    slug: "forgesense-industrial-intelligence",
+    title: "ForgeSense Industrial Intelligence",
+    tagline: "Synthetic industrial digital twin and operations platform",
+    type: "Full-Stack",
+    rank: "S",
+    class: "flagship",
+    featured: true,
+    kind: "card",
+    status: "published",
+    summary:
+      "A multi-service industrial operations platform. A telemetry simulator feeds a Spring Boot backend and a FastAPI/scikit-learn inference service, producing fleet state, anomaly and failure-risk assessments, alerts, maintenance workflows, scenario injection, and a Three.js digital twin.",
+    problem:
+      "Wiring telemetry ingestion, model inference, operational workflows, and an operator interface together is the actual engineering problem; the interesting part is doing it with data whose provenance is completely known.",
+    solution:
+      "Because every sample comes from a simulator in the same repository, each reported number is traceable to its generator. The README states the validity boundary plainly: held-out synthetic metrics do not establish real-world industrial predictive validity, and the system controls no physical equipment.",
+    stack: [
+      "Java / Spring Boot",
+      "Python / FastAPI",
+      "scikit-learn",
+      "Kafka",
+      "PostgreSQL",
+      "Redis",
+      "STOMP / WebSocket",
+      "Three.js",
+      "Docker Compose",
+    ],
+    github: "https://github.com/karkalashivareddy/forgesense-industrial-intelligence",
+    statusNote:
+      "Telemetry is synthetic and the ML metrics (anomaly AUC 0.8859, failure-risk AUC 0.9978, RUL RMSE 27.18 steps) are held-out synthetic-data metrics regenerated from the committed simulator, not real-plant results. RUL is measured in simulator degradation steps, not hours. Verified by 61 backend, 98 frontend, and 8 ML tests.",
+    accent: "#f5b759",
+    tags: ["Java", "Python", "ML", "Kafka", "Docker"],
+  },
+  {
+    slug: "loginsight-analyzer",
+    title: "LogInsight Analyzer",
+    tagline: "DSA-driven log analytics with algorithm traces",
+    type: "Algorithms",
+    rank: "A",
+    class: "flagship",
+    featured: true,
     kind: "card",
     status: "academic",
     summary:
-      "The repository currently contains the project abstract and design scope; implementation source is not yet present.",
+      "A DSA-3 course platform that makes algorithm behaviour inspectable. Java/Spring Boot engines implement string search, dynamic programming, graph and flow, approximation, randomized, and parallel algorithms over a log dataset, with selected engines emitting step traces, plus incident detection, topology views, and replay in a React/TypeScript front end.",
     problem:
-      "Document a process-management design for passing command arguments from a parent process to a child process.",
+      "An algorithm that returns the right answer still teaches nothing on its own; you cannot see which structure it used or where the work happened.",
     solution:
-      "The abstract specifies a future fork/exec/wait-based command runner; implementation remains future work.",
-    stack: ["C (planned)", "Linux / POSIX concepts", "fork / exec / wait design"],
-    github:
-      "https://github.com/karkalashivareddy/Command-Argument-Passing-System",
+      "Engines execute against real input data and the interesting ones record a trace, so the interface can replay the decision steps instead of only the result. The catalogue distinguishes entries that drive a product panel from those that are merely reachable engines.",
+    stack: [
+      "Java",
+      "Spring Boot",
+      "React",
+      "TypeScript",
+      "Vite",
+      "Server-Sent Events",
+      "JUnit",
+    ],
+    github: "https://github.com/karkalashivareddy/KLH_CSE_2026-27_DSA-3_S3_T17_Loginsight-Analyzer",
     statusNote:
-      "Documentation-only repository; source and executable are not currently published.",
-    accent: "#34d399",
-    tags: ["C", "Linux", "OS", "Processes"],
+      "A 42-entry catalogue (36 reachable, 35 dispatch keys, 13 trace-instrumented) whose published counts are pinned by a test. Dataset replay and the generated simulation are separate paths, and neither ingests external live telemetry. State is in-memory. Verified by 878 backend tests and 55 frontend tests.",
+    accent: "#a78bfa",
+    tags: ["Java", "DSA", "Algorithms", "Spring Boot"],
+  },
+  {
+    slug: "pharmastock-medicine-stock-management",
+    title: "PharmaStock — Medicine Stock Management",
+    tagline: "Batch-aware inventory with replica-set transactions",
+    type: "Full-Stack",
+    rank: "A",
+    class: "flagship",
+    featured: true,
+    kind: "case-study",
+    status: "academic",
+    summary:
+      "A medicine inventory system whose stock movements are transactional. The Express/Mongoose API writes stock changes inside MongoDB replica-set transactions, allocates sales by FEFO across batches, enforces role checks server-side, and records an audit trail; a React/Vite client provides inventory, purchasing, sales, expiry, and reporting workflows.",
+    problem:
+      "Stock can change from a purchase, a sale, a refund, or an adjustment. If those writes are not transactional, batch quantities and the ledger can disagree, and an audit trail built from the same inconsistent state is worthless.",
+    solution:
+      "Every stock mutation runs in a transaction with a rollback path that is tested by injecting a failure mid-operation, and the suite asserts that a rejected write leaves no inventory change and no audit row.",
+    stack: [
+      "React",
+      "Vite",
+      "Node.js",
+      "Express",
+      "MongoDB / Mongoose",
+      "JWT / RBAC",
+    ],
+    github: "https://github.com/karkalashivareddy/DataBase-System-and-Distributed-Backend-Development",
+    statusNote:
+      "Academic course project (Database Systems and Distributed Backend). The backend is implemented and tested, not a placeholder awaiting one; it is a local system with no deployment and no production users. Verified by 25 backend tests including replica-set transaction and rollback suites, plus a 24-check browser E2E suite.",
+    accent: "#5b8def",
+    tags: ["React", "MongoDB", "Transactions", "RBAC"],
   },
   {
     slug: "hospital-bed-management-system",
@@ -168,26 +245,23 @@ export const CLASS_META: Record<
   },
 };
 
+// Repositories kept as a secondary list. The four flagship projects above are
+// deliberately absent: ForgeSense and LogInsight used to appear here with a
+// one-line note, which buried two of the strongest repositories in the footer
+// of the data file rather than presenting them as first-class work.
 export const additionalProjects = [
   {
-    name: "forgesense-industrial-intelligence",
-    scope: "FLAGSHIP",
-    language: "Java / Python",
-    note: "Industrial operations platform with Spring Boot, FastAPI ML, Kafka, Redis, PostgreSQL, WebSockets, and Three.js.",
-    url: "https://github.com/karkalashivareddy/forgesense-industrial-intelligence",
+    name: "Creaters_Shell_OSSP",
+    scope: "COURSEWORK",
+    language: "C / Linux",
+    note: "Operating Systems and System Programming coursework: a mini shell plus process, signal, IPC, and file exercises. A collection of exercises, not a production shell.",
+    url: "https://github.com/karkalashivareddy/Creaters_Shell_OSSP",
   },
   {
     name: "university-time-table-generator",
     scope: "SCRIPT",
     language: "Python",
-    note: "Academic timetable generator — README updated to match real scope.",
+    note: "Academic timetable generator with conflict checks and an optional validator. It is a heuristic generator, not an optimal solver.",
     url: "https://github.com/karkalashivareddy/university-time-table-generator",
-  },
-  {
-    name: "KLH_CSE_2026-27_DSA-3_S3_T17_Loginsight-Analyzer",
-    scope: "ALGORITHM LAB",
-    language: "Java / TypeScript",
-    note: "Full-stack log analytics lab with executable algorithm modules.",
-    url: "https://github.com/karkalashivareddy/KLH_CSE_2026-27_DSA-3_S3_T17_Loginsight-Analyzer",
   },
 ] as const;

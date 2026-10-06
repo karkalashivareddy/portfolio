@@ -21,13 +21,13 @@ const STATUS_LABEL: Record<string, string> = {
 const SECTION_COPY: Record<string, { problem: string; system: string; ending: string }> = {
   "pharmastock-medicine-stock-management": {
     problem: "Pharmacy staff need one place to see stock, expiring batches and low-stock items before a shortage becomes a surprise.",
-    system: "The important boundary is deliberate: the shipped frontend runs on demo-data adapters today, while its async service contract is shaped for an Express + MongoDB backend later.",
-    ending: "A product surface designed around a real domain model: batches, transactions, expiry, roles and derived analytics.",
+    system: "Stock can change from a purchase, a sale, a refund, or an adjustment. Each of those runs inside a MongoDB replica-set transaction, so a failure part-way through leaves neither the batch quantity nor the audit trail changed.",
+    ending: "A real backend with a real domain model: batches, transactions, expiry, roles and derived analytics, verified by integration and browser suites.",
   },
   "command-argument-passing-system": {
-    problem: "The abstract frames a small but important operating-system question: how should a parent hand a command and its arguments to a child, then know how execution ended?",
-    system: "This is a planned process lifecycle, not a UI stack. The visualization follows argv from a parent parser through fork, exec, and wait.",
-    ending: "A clear process-lifecycle design is a useful starting point; runtime behavior remains future work until the implementation is published.",
+    problem: "Command execution hides almost everything worth seeing: whether exec succeeded, what argv the program actually received, and whether the PID you are looking at is still the same process.",
+    system: "A compiled C11/POSIX engine runs the real lifecycle — fork, execvp, waitpid — against a verified absolute path, while the gateway samples /proc for the tracked child and records the result as a validated event stream.",
+    ending: "An observability tool whose hardest requirement was honesty: every displayed value is observed, derived, or explicitly unavailable.",
   },
   "hospital-bed-management-system": {
     problem: "Hospitals need a live availability view instead of manually reconciling bed status across separate lists.",

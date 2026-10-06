@@ -2,7 +2,11 @@
 
 This repository contains my personal portfolio as a Next.js application. It is designed as a small software product rather than a static résumé: projects, engineering interests, coding profiles, and contact links are presented through an interactive, responsive interface with a Canvas 2D world scene, command palette, and admin system.
 
-Live site configured for this repository: [portfolio-shiva-c677.vercel.app](https://portfolio-shiva-c677.vercel.app)
+**Deployment status:** there is no publicly reachable deployment of this site. A Vercel project
+(`portfolio-shiva-c677.vercel.app`) is registered, but a direct request on 2026-10-06 returned
+`HTTP 302` to `vercel.com/sso-api`, meaning it is behind Vercel single sign-on and cannot be viewed
+without an account. It is therefore not advertised as a live site. Everything below is verified by
+running it locally.
 
 ## Features
 
@@ -65,7 +69,19 @@ npm start         # serve the production build
 npm run lint      # ESLint
 ```
 
-No environment variables are required by the current source tree. If deployment-specific configuration is added later, document it here and keep real credentials out of the repository.
+**Environment variables are optional.** The site runs with no `.env` file at all: every variable in
+[`.env.example`](.env.example) has a safe default in `lib/config.ts`. Setting them turns on optional
+behaviour —
+
+| Variable | Effect when unset | Effect when set |
+| --- | --- | --- |
+| `GITHUB_TOKEN` | GitHub API limited to 60 requests/hour | 5,000/hour, so the sync layer does not rate-limit |
+| `ADMIN_TOKEN` | `/admin` routes are disabled and return 404 | Enables the admin panel behind an HMAC-signed session |
+| `GITHUB_WEBHOOK_SECRET` | `/api/webhooks/github` refuses unsigned requests | Accepts signed deliveries |
+| `NEXT_PUBLIC_SITE_URL` | Canonical URL falls back to a default | Sets OG/canonical links for the real host |
+
+`ADMIN_TOKEN` is a real gate, so it must be set to a generated value rather than left empty in any
+deployment. No real credential is committed here; `.env` is ignored and `.env.example` holds placeholders.
 
 ## Project structure
 
@@ -106,8 +122,8 @@ lib/                    utilities (config, types, security, github, codolio, ana
 - `MasterWorldCanvas` is a client-only Canvas 2D component that renders a scroll-reactive world scene with projected nodes, signal streams, architecture diagrams, skill maps, and a constellation view — all via `getContext("2d")` and `requestAnimationFrame`, with no WebGL dependency.
 - Project metadata is typed through the `Project` interface, keeping portfolio content consistent across sections.
 - Reduced-motion handling uses `window.matchMedia("(prefers-reduced-motion: reduce)")` inside components; no dedicated hook.
-- The admin system uses HMAC-SHA256 signed stateless session cookies with rotation, CSRF same-origin checks, and timing-safe comparison.
-- The configured Vercel URL is treated as a deployment link; deployment configuration is not stored in this repository.
+- The admin system uses HMAC-SHA256 signed stateless session cookies with rotation, CSRF same-origin checks, and timing-safe comparison. It is off unless `ADMIN_TOKEN` is set.
+- A Vercel project exists for this repository but is behind single sign-on, so there is no public URL to link. Deployment configuration is not stored in this repository.
 
 ## Screenshots
 

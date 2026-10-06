@@ -78,7 +78,10 @@ Verified fields only; `results` omitted where no evidence exists. See `data/proj
 ```ts
 { totalSolved: number; platforms: number; contests: number; maxStreak: number; source: "Codolio"; asOf: string }
 ```
-(â‰ˆ2,531 problems; 5 platforms; 36+ contests; 91d streak; aggregate sourced to Codolio.)
+Seeded from a dated snapshot so the page renders offline. `asOf` is part of the type
+precisely so a fallback reading can never be mistaken for a live one, and the UI prints
+the date beside any figure taken from it. Superseded by the live Codolio aggregate
+whenever `/api/codolio` succeeds.
 
 ## `Socials`
 ```ts

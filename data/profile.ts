@@ -48,6 +48,16 @@ export const socials: import("../lib/types").Socials = {
   email: "karkalashivareddy@gmail.com",
 };
 
+/**
+ * A dated fallback snapshot of coding-practice totals, used only when the live
+ * Codolio sync has not run.
+ *
+ * These are **not** treated as verified facts. They are a September 2026
+ * snapshot, they already disagreed with an older copy of the profile README that
+ * claimed 2,531 problems and a 91-day streak, and nothing keeps them in step
+ * with the platforms. Nothing in the generated profile README prints them.
+ * Prefer the live aggregate from `data/coding.ts` / `lib/codolio.ts`.
+ */
 export const verifiedNumbers = {
   problemsSolved: 2613,
   platforms: 5,
@@ -55,4 +65,5 @@ export const verifiedNumbers = {
   codingStreakDays: 100,
   source: "Codolio",
   asOf: "2026-09-16",
+  isFallbackSnapshot: true,
 } as const;

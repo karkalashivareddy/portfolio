@@ -6,13 +6,13 @@ function Dot({ className = "" }: { className?: string }) {
 
 function PharmaVisual() {
   return (
-    <div className="case-visual case-visual-pharma" role="img" aria-label="Generated PharmaStock system visualization showing the frontend, service layer, API contract, database and analytics relationships">
-      <div className="case-visual-topline"><span>GENERATED SYSTEM VISUALIZATION</span><span>FLOW / 01</span></div>
+    <div className="case-visual case-visual-pharma" role="img" aria-label="PharmaStock system visualization showing the React client, Express API with server-side role checks, MongoDB replica-set transactions, and analytics">
+      <div className="case-visual-topline"><span>SYSTEM VISUALIZATION</span><span>FLOW / 01</span></div>
       <div className="pharma-rings" aria-hidden="true"><i /><i /><i /></div>
       <div className="pharma-node pharma-node-core"><Dot /><strong>PHARMA<br />STOCK</strong><small>inventory system</small></div>
       <div className="pharma-node pharma-node-react"><Dot /><strong>REACT / VITE</strong><small>17-page SPA · RBAC</small></div>
-      <div className="pharma-node pharma-node-api"><Dot /><strong>SERVICE LAYER</strong><small>async adapters</small></div>
-      <div className="pharma-node pharma-node-db"><Dot /><strong>MONGODB</strong><small>target contract</small></div>
+      <div className="pharma-node pharma-node-api"><Dot /><strong>EXPRESS API</strong><small>JWT · server-side RBAC</small></div>
+      <div className="pharma-node pharma-node-db"><Dot /><strong>MONGODB</strong><small>replica-set transactions</small></div>
       <div className="pharma-node pharma-node-analytics"><Dot /><strong>RECHARTS</strong><small>alerts + derived data</small></div>
       <svg className="case-connectors" viewBox="0 0 800 480" fill="none" aria-hidden="true">
         <path d="M185 108 C280 154 294 192 350 224" />
@@ -20,24 +20,24 @@ function PharmaVisual() {
         <path d="M450 244 C528 202 563 148 616 110" />
         <path d="M448 266 C522 302 568 340 618 370" />
       </svg>
-      <div className="case-visual-foot"><span>DEMO DATA TODAY</span><span>EXPRESS / MONGO CONTRACT READY</span></div>
+      <div className="case-visual-foot"><span>FEFO ALLOCATION</span><span>AUDIT TRAIL IN THE SAME TRANSACTION</span></div>
     </div>
   );
 }
 
 function CommandVisual() {
   return (
-    <div className="case-visual case-visual-command" role="img" aria-label="Generated planned process lifecycle visualization showing a parent, fork, child process, exec, program execution and wait synchronization">
-      <div className="case-visual-topline"><span>GENERATED PLANNED PROCESS MODEL</span><span>POSIX / LIFECYCLE</span></div>
-      <div className="terminal-command"><span>$</span> ./program arg1 arg2 arg3</div>
+    <div className="case-visual case-visual-command" role="img" aria-label="CAPS process lifecycle: the browser posts structured argv, a Fastify gateway spawns the C engine, which forks, execs the verified binary, samples /proc for the tracked child, and waits">
+      <div className="case-visual-topline"><span>REAL PROCESS LIFECYCLE</span><span>C11 / POSIX</span></div>
+      <div className="terminal-command"><span>$</span> caps --monitor --json /usr/bin/echo &quot;Hello CAPS&quot;</div>
       <div className="process-track">
-        <div className="process-node process-parent"><small>01 / PARENT</small><strong>REPL</strong><em>parse argv</em></div>
+        <div className="process-node process-parent"><small>01 / GATEWAY</small><strong>FASTIFY</strong><em>validate argv</em></div>
         <div className="process-arrow">fork()</div>
-        <div className="process-split"><div className="process-node"><small>02 / CHILD</small><strong>execvp()</strong><em>transfer argv</em></div><div className="process-node process-program"><small>03 / PROGRAM</small><strong>RUNNING</strong><em>exit status</em></div></div>
+        <div className="process-split"><div className="process-node"><small>02 / CAPS ENGINE</small><strong>execvp()</strong><em>verified abs path</em></div><div className="process-node process-program"><small>03 / TARGET</small><strong>RUNNING</strong><em>/proc sampled</em></div></div>
         <div className="process-arrow process-arrow-back">waitpid()</div>
-        <div className="process-node process-parent process-sync"><small>04 / PARENT</small><strong>SYNCHRONIZED</strong><em>WIFEXITED / WIFSIGNALED</em></div>
+        <div className="process-node process-parent process-sync"><small>04 / GATEWAY</small><strong>SYNCHRONIZED</strong><em>WIFEXITED / WIFSIGNALED</em></div>
       </div>
-      <div className="case-visual-foot"><span>PLANNED C / LINUX DESIGN</span><span>NO IMPLEMENTATION CLAIM</span></div>
+      <div className="case-visual-foot"><span>IMPLEMENTED AND TESTED</span><span>ONE TRACKED CHILD</span></div>
     </div>
   );
 }

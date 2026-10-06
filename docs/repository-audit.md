@@ -1,29 +1,53 @@
 # Repository Audit — karkalashivareddy
 
+> **Superseded in part, 2026-10-06.** Two entries below were stale when written and
+> are corrected here rather than deleted, so the record of what was believed and
+> when stays visible.
+>
+> * **CAPS (Command Argument Passing System) is fully implemented.** It was
+>   described here as a "documentation-only" abstract. It is a C11/POSIX process
+>   execution observatory: a compiled engine runs fork/execvp/waitpid, a Fastify
+>   gateway samples the tracked child from `/proc`, and a React console renders
+>   the persisted event stream. Verified by 260 C assertions under gcc and again
+>   under ASan/UBSan, 450 gateway tests, 247 frontend tests, a browser smoke
+>   suite, and 12 CI jobs. It samples one tracked child and does not discover
+>   descendants; it is not a sandbox.
+> * **PharmaStock's backend is implemented and tested**, not a "future Express/Mongo
+>   backend" boundary. It uses MongoDB replica-set transactions, FEFO allocation,
+>   and server-side RBAC, covered by 25 backend tests including rollback suites
+>   and a 24-check browser E2E suite.
+>
+> The corrections below have been applied to the text as well, so this document
+> reads correctly on its own.
+
 The live portfolio is limited to projects with traceable repositories or clearly labeled academic scope.
 
 ## PharmaStock — Medicine Stock Management
 
-React/Vite inventory portal with medicine, supplier and batch management, purchase and sales records, role-based UI, expiry/low-stock monitoring and Recharts analytics. The frontend is demo-data backed today; the service layer documents the boundary for a future Express/Mongo backend.
+React/Vite client with an Express/Mongoose API. Medicine, supplier and batch management, purchase, sales, refund and adjustment records, role-based access, expiry/low-stock monitoring and Recharts analytics. Stock movements run inside MongoDB replica-set transactions, sales allocate by FEFO, and the audit trail is written in the same transaction. Academic course project; local only, with demo authentication and no deployment.
 
 ## ForgeSense Industrial Intelligence
 
 Spring Boot and FastAPI industrial-operations platform with a digital twin,
-synthetic telemetry, Kafka/Redis/PostgreSQL adapters, WebSockets, observability,
-and experimental ML assessment. The repository documents its synthetic-data and
-heuristic limits explicitly.
+synthetic telemetry, Kafka/Redis/PostgreSQL, STOMP/WebSocket transport, and
+scikit-learn assessments. The repository documents its synthetic-data boundary
+explicitly: the reported metrics are held-out synthetic-data metrics and do not
+establish real-world industrial predictive validity.
 
 ## LogInsight Analyzer
 
 Full-stack Java/React algorithm laboratory with executable string, dynamic-
-programming, graph/flow, approximation, randomized, and parallel modules,
-trace playback, benchmarks, and a large test suite. Runtime data is in memory.
+programming, graph/flow, approximation, randomized, and parallel engines,
+trace playback, benchmarks, and 878 backend plus 55 frontend tests. Runtime data
+is in memory.
 
 ## Command Argument Passing System
 
-Documentation-only C/Linux systems project abstract. The repository describes a
-planned fork/exec/wait design; it does not currently contain implementation
-source or an executable.
+A C11/POSIX process execution observatory (CAPS). A compiled engine executes an
+allowlisted command through the real fork/execvp/waitpid lifecycle with no shell
+and no second lexer; the gateway samples `/proc` for the tracked child, validates
+and persists the event stream to SQLite, and streams it to a React console over
+SSE with read-only replay. Process identity is PID plus kernel start time.
 
 ## Hospital Bed Management System
 

@@ -6,9 +6,11 @@ import TelemetryReadout from "../ui/TelemetryReadout";
 import Reveal from "../ui/Reveal";
 
 /** SIGNAL — the moment the field detects its own telemetry. One dominant
- *  reading (2,531), subordinate telemetry aligned beneath, live portfolio
- *  signal in the header. The numbers take colour from the cyan/sky family via
- *  the ambient chapter field rather than sitting in grey cards. */
+ *  reading, subordinate telemetry aligned beneath, live portfolio signal in the
+ *  header. Every figure here comes from the dated snapshot in
+ *  `data/profile.ts` / `data/coding.ts`, and the dominant reading prints that
+ *  date. The numbers take colour from the cyan/sky family via the ambient
+ *  chapter field rather than sitting in grey cards. */
 export default function ProofStrip() {
   const rows = [
     { value: verifiedNumbers.platforms, valueSuffix: "", label: "platforms", dot: "#22d3ee" },
@@ -39,11 +41,26 @@ export default function ProofStrip() {
               </div>
             </Reveal>
             <Reveal delay={120}>
+              {/*
+                A dated snapshot, labelled as one.
+
+                This is a September 2026 figure held in `data/profile.ts`, not a
+                live reading. Showing it without a date is how a site ends up
+                quietly wrong, and the Codolio profile renders the live value
+                from the platform APIs. The date is printed rather than hidden so
+                a reader can tell a snapshot from a live figure.
+              */}
               <div
                 className="data-number mt-4 font-display tabular-nums"
-                aria-label={`${verifiedNumbers.problemsSolved.toLocaleString("en-US")} problems solved across five platforms`}
+                aria-label={`${verifiedNumbers.problemsSolved.toLocaleString("en-US")} problems solved across ${verifiedNumbers.platforms} platforms, as recorded on ${verifiedNumbers.asOf}`}
               >
                 {verifiedNumbers.problemsSolved.toLocaleString("en-US")}
+              </div>
+              <div className="mt-2 font-mono text-[10px] uppercase tracking-[0.14em] text-fg-2">
+                snapshot · {verifiedNumbers.asOf} ·{" "}
+                <a className="underline underline-offset-2" href="/coding">
+                  live figures
+                </a>
               </div>
             </Reveal>
             <Reveal delay={180}>
